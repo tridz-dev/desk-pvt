@@ -264,6 +264,10 @@ export default {
 				},
 			},
 			{
+				label: "Customers",
+				icon: "customers"
+			},
+			{
 				label: "Contacts",
 				icon: "customers",
 				to: {
