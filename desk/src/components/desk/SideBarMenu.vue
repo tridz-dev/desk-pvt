@@ -265,7 +265,10 @@ export default {
 			},
 			{
 				label: "Customers",
-				icon: "customers"
+				icon: "customers",
+				to: {
+					path: "/frappedesk/customers"
+				}
 			},
 			{
 				label: "Contacts",
@@ -323,8 +326,10 @@ export default {
 				"frappedesk/tickets": "Tickets",
 				"frappedesk/kb": "Knowledge Base",
 				"frappedesk/reports": "Reports",
+				"frappedesk/customers": "Customers",
 				"frappedesk/contacts": "Contacts",
-				"frappedesk/settings": "Settings",
+				"frappedesk/settings": "Settings"
+				
 			}
 			Object.keys(routeMenuItemMap).forEach((route) => {
 				if (this.$route.path.includes(route)) {
