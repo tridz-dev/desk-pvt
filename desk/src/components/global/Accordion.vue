@@ -2,7 +2,7 @@
 	<div>
 		<button
 			@click="toggleAccordion()"
-			class="flex items-center space-x-3"
+			class="flex items-center space-x-3 pl-[20px]"
 			:aria-expanded="isOpen"
 			:aria-controls="`collapse${_uid}`"
 		>
@@ -16,6 +16,22 @@
 			<slot name="title" />
 		</button>
 
+		<div
+			class="flex justify-between w-[75%] pl-[20px]"
+			v-show="isOpen"
+			:id="`collapse${_uid}`"
+		>
+			<div>
+				<slot class="flex-col" name="customer" />
+			</div>
+			<div>
+				<slot name="email" />
+			</div>
+			<div>
+				<slot name="phoneNo" />
+			</div>
+		</div>
+
 		<div v-show="isOpen" :id="`collapse${_uid}`">
 			<slot name="content" />
 		</div>
@@ -26,6 +42,7 @@
 import CustomIcons from "@/components/desk/global/CustomIcons.vue"
 export default {
 	name: "Accordion",
+	props: ["value"],
 	components: {
 		CustomIcons,
 	},

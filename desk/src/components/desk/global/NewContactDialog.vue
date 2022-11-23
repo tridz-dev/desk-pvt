@@ -35,6 +35,46 @@
 						/>
 						<ErrorMessage :message="phoneValidationError" />
 					</div>
+					<div class="w-full space-y-1">
+						<div>
+							<span
+								class="block mb-2 text-sm leading-4 text-gray-700"
+							>
+								Customer
+							</span>
+						</div>
+						<Autocomplete
+							:value="selectedCustomer"
+							@change="
+								(item) => {
+									if (!item) {
+										return
+									}
+									selectedCustomer = item.value
+								}
+							"
+							:resourceOptions="{
+								method: 'frappe.client.get_list',
+								inputMap: (query) => {
+									return {
+										doctype: 'FD Customer',
+										pluck: 'name',
+										filters: [
+											['name', 'like', `%${query}%`],
+										],
+									}
+								},
+								responseMap: (res) => {
+									return res.map((d) => {
+										return {
+											label: d.name,
+											value: d.name,
+										}
+									})
+								},
+							}"
+						/>
+					</div>
 					<div class="flex float-right space-x-2">
 						<Button
 							:loading="this.$resources.createContact.loading"
@@ -52,6 +92,7 @@
 <script>
 import { Input, Dialog, ErrorMessage } from "frappe-ui"
 import { computed, ref, inject } from "vue"
+import Autocomplete from "@/components/global/Autocomplete.vue"
 
 export default {
 	name: "NewContactDialog",
@@ -66,6 +107,7 @@ export default {
 		const firstNameValidationError = ref("")
 		const lastNameValidationError = ref("")
 		const phoneValidationError = ref("")
+		const selectedCustomer = ref("")
 
 		const contacts = inject("contacts")
 
@@ -86,6 +128,7 @@ export default {
 			firstNameValidationError,
 			lastNameValidationError,
 			phoneValidationError,
+			selectedCustomer,
 		}
 	},
 	data() {
@@ -94,6 +137,7 @@ export default {
 			lastName: "",
 			emailId: "",
 			phone: "",
+			customer: "",
 		}
 	},
 	watch: {
@@ -121,11 +165,24 @@ export default {
 				},
 			}
 		},
+
+		getCustomers() {
+			return {
+				method: "frappe.client.get_list",
+				params: {
+					doctype: "FD Customer",
+					fields: ["name", "customer_name"],
+				},
+				auto: true,
+			}
+		},
 	},
+
 	components: {
 		Input,
 		Dialog,
 		ErrorMessage,
+		Autocomplete,
 	},
 	methods: {
 		createContact() {
@@ -138,6 +195,7 @@ export default {
 				first_name: this.firstName,
 				last_name: this.lastName,
 				email_ids: [{ email_id: this.emailId, is_primary: true }],
+				links:[{link_doctype: 'FD Customer',link_name:this.selectedCustomer}]
 			}
 			if (this.phone) {
 				doc.phone_nos = [{ phone: this.phone }]

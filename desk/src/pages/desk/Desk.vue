@@ -1,11 +1,8 @@
 <template>
-	<div
-		v-if="user.isLoggedIn() && user.has_desk_access"
-		class="w-screen h-screen"
-	>
+	<div v-if="user.isLoggedIn() && user.has_desk_access" class="h-screen">
 		<div v-if="initialized">
 			<div class="flex flex-row w-screen">
-				<SideBarMenu class="bg-gray-50 shrink-0 w-[241px]" />
+				<SideBarMenu class="bg-gray-50 shrink-0 pr-10" />
 				<router-view class="grow" :key="$route.fullPath" />
 			</div>
 		</div>
@@ -93,17 +90,17 @@ export default {
 			if (!this.user.isLoggedIn()) return false
 			if (!this.user.has_desk_access) return false
 			if (this.$resources.frappedeskSettings.loading) return false
-			if (!this.$resources.frappedeskSettings.data.initial_agent_set) {
-				this.$resources.setupInitialAgent.submit()
-				return false
-			}
-			if (
-				!this.$resources.frappedeskSettings.data
-					.initial_demo_ticket_created
-			) {
-				this.$resources.createInitialDemoTicket.submit()
-				return false
-			}
+			// if (!this.$resources.frappedeskSettings.data.initial_agent_set) {
+			// 	this.$resources.setupInitialAgent.submit()
+			// 	return false
+			// }
+			// if (
+			// 	!this.$resources.frappedeskSettings.data
+			// 		.initial_demo_ticket_created
+			// ) {
+			// 	this.$resources.createInitialDemoTicket.submit()
+			// 	return false
+			// }
 
 			return true
 		},
