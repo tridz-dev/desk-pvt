@@ -9,7 +9,10 @@
  "field_order": [
   "customer_name",
   "domain",
-  "contact_html"
+  "contact_html",
+  "section_break_4",
+  "contact_count",
+  "ticket_count"
  ],
  "fields": [
   {
@@ -27,11 +30,27 @@
    "fieldname": "contact_html",
    "fieldtype": "HTML",
    "label": "Contact"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "contact_count",
+   "fieldtype": "Data",
+   "label": "Contact Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ticket_count",
+   "fieldtype": "Data",
+   "label": "Ticket Count",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-11-22 13:32:08.033686",
+ "modified": "2022-11-24 11:52:07.995072",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "FD Customer",
