@@ -22,13 +22,40 @@
 			:id="`collapse${_uid}`"
 		>
 			<div>
-				<slot class="flex-col" name="customer" />
+				<slot class="flex-col" name="contact" />
 			</div>
 			<div>
 				<slot name="email" />
 			</div>
 			<div>
 				<slot name="phoneNo" />
+			</div>
+		</div>
+		<div
+			class="flex justify-between w-[75%] pl-[20px]"
+			v-show="isOpen"
+			:id="`collapse${_uid}`"
+		>
+			<div>
+				<slot name="id" />
+			</div>
+			<div>
+				<slot name="subject" />
+			</div>
+			<div>
+				<slot name="status" />
+			</div>
+			<div>
+				<slot name="ticketType" />
+			</div>
+			<div>
+				<slot name="priority" />
+			</div>
+			<div>
+				<slot name="ticketContact" />
+			</div>
+			<div>
+				<slot name="photo" />
 			</div>
 		</div>
 
