@@ -259,7 +259,7 @@ export default {
 			},
 			{
 				label: "Customers",
-				icon: "customers",
+				icon: "customer",
 				to: {
 					path: "/frappedesk/customers"
 				}
