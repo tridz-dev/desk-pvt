@@ -8,6 +8,8 @@
 				fields: [
 					'customer_name',
 					'domain',
+					'contact_count',
+					'ticket_count'
 				],
 				limit: 20,
 			}"
@@ -23,10 +25,14 @@
 								label: 'Name',
 								width: '4',
 							},
-							contact: {
+							contact_count: {
 								label: 'Contacts',
 								width: '4',
 							},
+							ticket_count: {
+								label: 'Tickets',
+								width: '4'
+							}
 						},
 					}"
 					class="text-base h-[100vh] pt-4"
