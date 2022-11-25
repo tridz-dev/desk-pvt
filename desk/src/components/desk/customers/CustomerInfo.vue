@@ -5,43 +5,65 @@
 				class="pl-[20px] pr-[16px] pb-[20px] border-b-[1px] pt-[7px] flex justify-between"
 			>
 				<div v-if="editingTitle">
-					<Input
-						v-if="editingTitle"
-						label="Customer Name"
-						type="text"
-						v-model="customer"
-					/>
-					<div class="font-light text-base">
-						{{ values.domain }}
-					</div>
-				</div>
-				<div v-else>
-					<div class="font-medium text-2xl w-full">
-						{{ values.organizationName }}
-					</div>
-					<div v-if="editingDomain">
+					<div>
 						<Input
-							v-if="editingDomain"
+							label="Customer Name"
+							type="text"
+							v-model="customer"
+						/>
+					</div>
+					<div>
+						<Input
 							label="Domain"
 							type="text"
 							v-model="values.domain"
 						/>
 					</div>
-					<div v-else class="font-light text-base">
-						{{ values.domain }}
+				</div>
+				<div v-else>
+					<div class="flex">
+						<div
+							class="bg-[#90C5F4] w-14 h-14 justify-center flex items-center rounded-md font-medium text-white text-2xl"
+						>
+							<span>{{ acronym[0] }} {{ acronym[1] }}</span>
+						</div>
+						<div class="pl-4">
+							<div class="font-medium text-2xl w-full">
+								{{ values.organizationName }}
+							</div>
+
+							<div class="font-light text-base">
+								{{ values.domain }}
+							</div>
+						</div>
 					</div>
 				</div>
-				<div v-if="editingTitle || editingDomain">
+				<div v-if="editingTitle">
 					<Button
 						class="mr-1"
 						appearance="primary"
-						@click="updateCustomer()"
+						@click="
+							() => {
+								updateCustomer()
+								editingTitle = false
+							}
+						"
 						>Save</Button
 					>
-					<Button class="mr-1" appearance="secondary">Discard</Button>
+					<Button
+						class="mr-1"
+						appearance="secondary"
+						@click="
+							() => {
+								editingTitle = false
+								$resources.organization.reload()
+							}
+						"
+						>Discard</Button
+					>
 				</div>
 				<div v-else>
-					<Dropdown
+					<!-- <Dropdown
 						class="ml-auto"
 						placement="right"
 						:button="{
@@ -61,12 +83,19 @@
 								handler: () => (editingDomain = true),
 							},
 						]"
-					/>
+					/> -->
+					<Button
+						class="mr-1"
+						appearance="secondary"
+						icon-left="edit"
+						@click="editingTitle = true"
+						>Edit</Button
+					>
 					<Button
 						class="mr-1"
 						appearance="secondary"
 						icon-left="trash"
-						@click="removeCustomer()"
+						@click="deleteCustomer()"
 						>Delete</Button
 					>
 					<Button
@@ -100,18 +129,17 @@
 							<span class="font-medium text-lg">Contacts </span>
 						</template>
 
-						<template v-slot:contact>
-							<div v-for="contact in this.contactList">
+						<template
+							v-slot:contact
+							v-for="contact in this.contactList"
+						>
+							<div>
 								{{ contact.name }}
 							</div>
-						</template>
-						<template v-slot:email>
-							<div v-for="contact in this.contactList">
+							<div>
 								{{ contact.email_ids[0].email_id }}
 							</div>
-						</template>
-						<template v-slot:phoneNo>
-							<div v-for="contact in this.contactList">
+							<div>
 								{{ contact.phone_nos[0].phone }}
 							</div>
 						</template>
@@ -124,34 +152,52 @@
 						</template>
 
 						<template v-slot:id>
-							<div v-for="ticket in this.ticketList">
+							<div
+								v-for="ticket in this.ticketList"
+								class="font-normal text-sm text-[#74808B]"
+							>
 								{{ ticket.name }}
 							</div>
 						</template>
 						<template v-slot:subject>
-							<div v-for="ticket in this.ticketList">
+							<div
+								v-for="ticket in this.ticketList"
+								class="font-semibold text-sm text-[#192734]"
+							>
 								<a>
 									{{ ticket.subject }}
 								</a>
 							</div>
 						</template>
 						<template v-slot:status>
-							<div v-for="ticket in this.ticketList">
+							<div
+								v-for="ticket in this.ticketList"
+								class="font-normal text-xs"
+							>
 								{{ ticket.status }}
 							</div>
 						</template>
 						<template v-slot:ticketType>
-							<div v-for="ticket in this.ticketList">
+							<div
+								v-for="ticket in this.ticketList"
+								class="font-medium text-xs"
+							>
 								{{ ticket.ticket_type }}
 							</div>
 						</template>
 						<template v-slot:priority>
-							<div v-for="ticket in this.ticketList">
+							<div
+								v-for="ticket in this.ticketList"
+								class="font-normal text-xs text-[#74808B]"
+							>
 								{{ ticket.priority }}
 							</div>
 						</template>
 						<template v-slot:ticketContact>
-							<div v-for="ticket in this.ticketList">
+							<div
+								v-for="ticket in this.ticketList"
+								class="font-normal text-sm text-[#74808B]"
+							>
 								{{ ticket.contact }}
 							</div>
 						</template>
@@ -207,7 +253,6 @@ export default {
 	data() {
 		return {
 			editingTitle: false,
-			editingDomain: false,
 			contactList: [],
 			ticketList: [],
 			showNewContactDialog: false,
@@ -215,12 +260,16 @@ export default {
 		}
 	},
 	computed: {
+		acronym() {
+			var str = this.$resources.organization.doc.customer_name
+			var matches = str.match(/\b(\w)/g)
+			var acronym = matches.join("")
+			return acronym
+		},
 		ticketDoc() {
-			console.log(this.$resources.ticket.data)
 			return this.$resources.ticket.data
 		},
 		contactDoc() {
-			console.log(this.$resources.contact.data || null)
 			return this.$resources.contact.data
 		},
 		customerDoc() {
@@ -276,6 +325,9 @@ export default {
 				},
 			}
 		},
+	},
+
+	methods: {
 		deleteCustomer() {
 			return {
 				method: "frappe.client.delete",
@@ -283,18 +335,27 @@ export default {
 					doctype: "FD Customer",
 					name: this.customer,
 				},
-
-				onSuccess: (event) => {
-					console.log(event, "hello")
-				},
 				auto: true,
-			}
-		},
-	},
 
-	methods: {
-		removeCustomer() {
-			return this.$resources.deleteCustomer
+				onSuccess: () => {
+					this.$toast({
+						title: "Customer deleted",
+						customIcon: "circle-check",
+						appearance: "success",
+					})
+					this.resetForm()
+				},
+
+				onError: (e) => {
+					console.log(e)
+					this.$toast({
+						title: "Cannot delete customer",
+						text: e,
+						customIcon: "circle-fail",
+						appearance: "danger",
+					})
+				},
+			}
 		},
 		updateCustomer() {
 			this.$resources.organization.setValue.submit({
