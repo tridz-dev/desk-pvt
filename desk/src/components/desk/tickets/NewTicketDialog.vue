@@ -48,6 +48,46 @@
 						/>
 						<ErrorMessage :message="contactValidationError" />
 					</div>
+					<div class="w-full space-y-1">
+						<div>
+							<span
+								class="block mb-2 text-sm leading-4 text-gray-700"
+							>
+								Customer
+							</span>
+						</div>
+						<Autocomplete
+							:value="selectedCustomer"
+							@change="
+								(item) => {
+									if (!item) {
+										return
+									}
+									selectedCustomer = item.value
+								}
+							"
+							:resourceOptions="{
+								method: 'frappe.client.get_list',
+								inputMap: (query) => {
+									return {
+										doctype: 'FD Customer',
+										pluck: 'name',
+										filters: [
+											['name', 'like', `%${query}%`],
+										],
+									}
+								},
+								responseMap: (res) => {
+									return res.map((d) => {
+										return {
+											label: d.name,
+											value: d.name,
+										}
+									})
+								},
+							}"
+						/>
+					</div>
 					<div class="space-y-1">
 						<div>
 							<span
@@ -123,6 +163,7 @@ export default {
 		const contactValidationError = ref("")
 		const subjectValidationError = ref("")
 		const descriptionValidationError = ref("")
+		const selectedCustomer = ref("")
 
 		let open = computed({
 			get: () => props.modelValue,
@@ -144,6 +185,7 @@ export default {
 			descriptionValidationError,
 			open,
 			ticketController,
+			selectedCustomer,
 		}
 	},
 	data() {
@@ -221,6 +263,7 @@ export default {
 					contact: this.selectedContact,
 					subject: this.subject,
 					description: this.descriptionContent,
+					customer: this.selectedCustomer,
 				})
 				.then(() => {
 					this.isCreating = false
