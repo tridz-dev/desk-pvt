@@ -29,7 +29,7 @@
 						</div>
 						<div class="pl-4">
 							<div class="font-medium text-2xl w-full">
-								{{ values.organizationName }}
+								{{ values.customerName }}
 							</div>
 
 							<div class="font-light text-base">
@@ -56,7 +56,7 @@
 						@click="
 							() => {
 								editingTitle = false
-								$resources.organization.reload()
+								$resources.customer.reload()
 							}
 						"
 						>Discard</Button
@@ -118,7 +118,9 @@
 						v-slot:contact
 						v-for="contact in this.contactList"
 					>
-						<div class="flex justify-between w-[75%]">
+						<div
+							class="flex pl-[22px] w-[75%] justify-between font-normal text-sm py-3 border-b border-[#F4F5F6]-400 mx-5"
+						>
 							<div>
 								{{ contact.name }}
 							</div>
@@ -145,34 +147,38 @@
 					</template>
 
 					<template v-slot:ticket v-for="ticket in this.ticketList">
-						<div class="font-normal text-sm text-[#74808B]">
-							{{ ticket.name }}
-						</div>
+						<div
+							class="flex justify-between w-[75%] pl-[45px] py-3"
+						>
+							<div class="font-normal text-sm text-[#74808B]">
+								{{ ticket.name }}
+							</div>
 
-						<div class="font-semibold text-sm text-[#192734]">
-							<a>
-								{{ ticket.subject }}
-							</a>
-						</div>
+							<div class="font-semibold text-sm text-[#192734]">
+								<a>
+									{{ ticket.subject }}
+								</a>
+							</div>
 
-						<div class="font-normal text-xs">
-							{{ ticket.status }}
-						</div>
+							<div class="font-normal text-xs">
+								{{ ticket.status }}
+							</div>
 
-						<div class="font-medium text-xs">
-							{{ ticket.ticket_type }}
-						</div>
+							<div class="font-medium text-xs">
+								{{ ticket.ticket_type }}
+							</div>
 
-						<div class="font-normal text-xs text-[#74808B]">
-							{{ ticket.priority }}
-						</div>
+							<div class="font-normal text-xs text-[#74808B]">
+								{{ ticket.priority }}
+							</div>
 
-						<div class="font-normal text-sm text-[#74808B]">
-							{{ ticket.contact }}
-						</div>
+							<div class="font-normal text-sm text-[#74808B]">
+								{{ ticket.contact }}
+							</div>
 
-						<div>
-							{{ customer.image }}
+							<div>
+								{{ customer.image }}
+							</div>
 						</div>
 					</template>
 				</Accordion>
@@ -230,7 +236,7 @@ export default {
 	},
 	computed: {
 		acronym() {
-			var str = this.$resources.organization.doc.customer_name
+			var str = this.$resources.customer.doc.customer_name
 			var matches = str.match(/\b(\w)/g)
 			var acronym = matches.join("")
 			return acronym
@@ -242,18 +248,18 @@ export default {
 			return this.$resources.contact.data
 		},
 		customerDoc() {
-			return this.$resources.organization.doc || null
+			return this.$resources.customer.doc || null
 		},
 		values() {
 			return {
-				organizationName: this.customerDoc?.customer_name || null,
+				customerName: this.customerDoc?.customer_name || null,
 				domain: this.customerDoc?.domain || null,
 				mobile: this.contactDoc?.email_id || null,
 			}
 		},
 	},
 	resources: {
-		organization() {
+		customer() {
 			return {
 				type: "document",
 				doctype: "FD Customer",
@@ -327,7 +333,7 @@ export default {
 			}
 		},
 		updateCustomer() {
-			this.$resources.organization.setValue.submit({
+			this.$resources.customer.setValue.submit({
 				customer_name: this.customer,
 				domain: this.values.domain,
 			})
