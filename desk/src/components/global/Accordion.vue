@@ -15,22 +15,14 @@
 			/>
 			<slot name="title" />
 		</button>
-
 		<div
-			class="flex justify-between w-[75%] pl-[20px]"
+			class="flex pl-[20px] font-normal text-sm py-3 border-b border-[#F4F5F6]-400 mx-5"
 			v-show="isOpen"
 			:id="`collapse${_uid}`"
 		>
-			<div>
-				<slot class="flex-col" name="contact" />
-			</div>
-			<div>
-				<slot name="email" />
-			</div>
-			<div>
-				<slot name="phoneNo" />
-			</div>
+			<slot name="contact" />
 		</div>
+
 		<div
 			class="flex justify-between w-[75%] pl-[20px]"
 			v-show="isOpen"
