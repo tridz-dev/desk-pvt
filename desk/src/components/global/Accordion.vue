@@ -16,7 +16,6 @@
 			<slot name="title" />
 		</button>
 		<div
-			class="flex pl-[20px] font-normal text-sm py-3 border-b border-[#F4F5F6]-400 mx-5"
 			v-show="isOpen"
 			:id="`collapse${_uid}`"
 		>
@@ -24,31 +23,11 @@
 		</div>
 
 		<div
-			class="flex justify-between w-[75%] pl-[20px]"
+			
 			v-show="isOpen"
 			:id="`collapse${_uid}`"
 		>
-			<div>
-				<slot name="id" />
-			</div>
-			<div>
-				<slot name="subject" />
-			</div>
-			<div>
-				<slot name="status" />
-			</div>
-			<div>
-				<slot name="ticketType" />
-			</div>
-			<div>
-				<slot name="priority" />
-			</div>
-			<div>
-				<slot name="ticketContact" />
-			</div>
-			<div>
-				<slot name="photo" />
-			</div>
+			<slot name="ticket" />
 		</div>
 
 		<div v-show="isOpen" :id="`collapse${_uid}`">
