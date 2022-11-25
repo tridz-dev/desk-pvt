@@ -63,27 +63,6 @@
 					>
 				</div>
 				<div v-else>
-					<!-- <Dropdown
-						class="ml-auto"
-						placement="right"
-						:button="{
-							icon: 'edit',
-							appearance: 'minimal',
-							label: 'Edit Customer',
-						}"
-						:options="[
-							{
-								label: 'Edit Title',
-								icon: 'edit',
-								handler: () => (editingTitle = true),
-							},
-							{
-								label: 'Edit Domain',
-								icon: 'edit',
-								handler: () => (editingDomain = true),
-							},
-						]"
-					/> -->
 					<Button
 						class="mr-1"
 						appearance="secondary"
@@ -122,17 +101,24 @@
 					>
 				</div>
 			</div>
-			<div>
-				<div>
-					<Accordion class="w-full pt-[5px]">
-						<template v-slot:title>
-							<span class="font-medium text-lg">Contacts </span>
-						</template>
 
-						<template
-							v-slot:contact
-							v-for="contact in this.contactList"
-						>
+			<div>
+				<Accordion class="w-full pt-[5px]">
+					<template v-slot:title>
+						<span class="font-medium text-lg"
+							>Contacts ({{
+								customerDoc.contact_count == null
+									? "0"
+									: customerDoc.contact_count
+							}})
+						</span>
+					</template>
+
+					<template
+						v-slot:contact
+						v-for="contact in this.contactList"
+					>
+						<div class="flex justify-between w-[75%]">
 							<div>
 								{{ contact.name }}
 							</div>
@@ -142,74 +128,57 @@
 							<div>
 								{{ contact.phone_nos[0].phone }}
 							</div>
-						</template>
-					</Accordion>
-				</div>
-				<div>
-					<Accordion class="w-full pt-[5px]">
-						<template v-slot:title>
-							<span class="font-medium text-lg">Tickets </span>
-						</template>
+						</div>
+					</template>
+				</Accordion>
+			</div>
+			<div>
+				<Accordion class="w-full pt-[5px]">
+					<template v-slot:title>
+						<span class="font-medium text-lg"
+							>Tickets ({{
+								customerDoc.ticket_count == null
+									? "0"
+									: customerDoc.ticket_count
+							}})
+						</span>
+					</template>
 
-						<template v-slot:id>
-							<div
-								v-for="ticket in this.ticketList"
-								class="font-normal text-sm text-[#74808B]"
-							>
-								{{ ticket.name }}
-							</div>
-						</template>
-						<template v-slot:subject>
-							<div
-								v-for="ticket in this.ticketList"
-								class="font-semibold text-sm text-[#192734]"
-							>
-								<a>
-									{{ ticket.subject }}
-								</a>
-							</div>
-						</template>
-						<template v-slot:status>
-							<div
-								v-for="ticket in this.ticketList"
-								class="font-normal text-xs"
-							>
-								{{ ticket.status }}
-							</div>
-						</template>
-						<template v-slot:ticketType>
-							<div
-								v-for="ticket in this.ticketList"
-								class="font-medium text-xs"
-							>
-								{{ ticket.ticket_type }}
-							</div>
-						</template>
-						<template v-slot:priority>
-							<div
-								v-for="ticket in this.ticketList"
-								class="font-normal text-xs text-[#74808B]"
-							>
-								{{ ticket.priority }}
-							</div>
-						</template>
-						<template v-slot:ticketContact>
-							<div
-								v-for="ticket in this.ticketList"
-								class="font-normal text-sm text-[#74808B]"
-							>
-								{{ ticket.contact }}
-							</div>
-						</template>
-						<template v-slot:photo>
-							<div v-for="customer in this.customerList">
-								{{ customer.image }}
-							</div>
-						</template>
-					</Accordion>
-				</div>
+					<template v-slot:ticket v-for="ticket in this.ticketList">
+						<div class="font-normal text-sm text-[#74808B]">
+							{{ ticket.name }}
+						</div>
+
+						<div class="font-semibold text-sm text-[#192734]">
+							<a>
+								{{ ticket.subject }}
+							</a>
+						</div>
+
+						<div class="font-normal text-xs">
+							{{ ticket.status }}
+						</div>
+
+						<div class="font-medium text-xs">
+							{{ ticket.ticket_type }}
+						</div>
+
+						<div class="font-normal text-xs text-[#74808B]">
+							{{ ticket.priority }}
+						</div>
+
+						<div class="font-normal text-sm text-[#74808B]">
+							{{ ticket.contact }}
+						</div>
+
+						<div>
+							{{ customer.image }}
+						</div>
+					</template>
+				</Accordion>
 			</div>
 		</div>
+
 		<NewContactDialog
 			v-model="showNewContactDialog"
 			@contact-created="
