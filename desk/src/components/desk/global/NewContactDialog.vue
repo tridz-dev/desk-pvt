@@ -74,6 +74,7 @@
 								},
 							}"
 						/>
+						<ErrorMessage :message="customerValidationError" />
 					</div>
 					<div class="flex float-right space-x-2">
 						<Button
@@ -107,6 +108,7 @@ export default {
 		const firstNameValidationError = ref("")
 		const lastNameValidationError = ref("")
 		const phoneValidationError = ref("")
+		const customerValidationError = ref("")
 		const selectedCustomer = ref("")
 
 		const contacts = inject("contacts")
@@ -128,6 +130,7 @@ export default {
 			firstNameValidationError,
 			lastNameValidationError,
 			phoneValidationError,
+			customerValidationError,
 			selectedCustomer,
 		}
 	},
@@ -149,6 +152,9 @@ export default {
 		},
 		phone(newValue) {
 			this.validatePhone(newValue)
+		},
+		customer(newValue) {
+			this.validateCustomer(newValue)
 		},
 	},
 	resources: {
@@ -195,7 +201,12 @@ export default {
 				first_name: this.firstName,
 				last_name: this.lastName,
 				email_ids: [{ email_id: this.emailId, is_primary: true }],
-				links:[{link_doctype: 'FD Customer',link_name:this.selectedCustomer}]
+				links: [
+					{
+						link_doctype: "FD Customer",
+						link_name: this.selectedCustomer,
+					},
+				],
 			}
 			if (this.phone) {
 				doc.phone_nos = [{ phone: this.phone }]
@@ -250,6 +261,15 @@ export default {
 				this.phoneValidationError = "Enter a valid phone number"
 			}
 			return this.phoneValidationError
+		},
+		validateCustomer(value) {
+			this.customerValidationError = ""
+			if (!value) {
+				this.customerValidationError = "Customer should not be empty"
+			} else if (value.trim() == "") {
+				this.customerValidationError = "Customer should not be empty"
+			}
+			return this.customerValidationError
 		},
 	},
 }
