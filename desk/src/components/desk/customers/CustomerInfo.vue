@@ -130,7 +130,11 @@
 								{{ contact.email_ids[0].email_id }}
 							</div>
 							<div class="w-[20%]">
-								{{ contact.phone_nos[0].phone }}
+								{{
+									contact.phone_nos.length == 0
+										? ""
+										: contact.phone_nos[0].phone
+								}}
 							</div>
 						</div>
 					</template>
@@ -195,14 +199,12 @@
 								{{ ticket.contact }}
 							</div>
 
-							
-								<!-- <Avatar
+							<!-- <Avatar
 									v-for="contact in contactDoc"
 									:label="user"
 									:imageURL="contact.image"
 									size="md"
 								/> -->
-
 						</div>
 					</template>
 				</AccordionCustomer>
