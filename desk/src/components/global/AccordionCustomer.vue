@@ -10,7 +10,7 @@
 			<CustomIcons
 				:class="{
 					'rotate-180': isOpen,
-					'rotate-0': !isOpen,
+					'rotate-180': !isOpen,
 				}"
 				name="chevron-down-accordion"
 			/>
