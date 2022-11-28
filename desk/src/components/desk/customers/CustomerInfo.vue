@@ -2,7 +2,7 @@
 	<div class="flex">
 		<div class="w-full">
 			<div
-				class="pl-[20px] pr-[16px] pb-[20px] border-b-[1px] pt-[7px] flex justify-between"
+				class="pl-[20px] pr-[16px] pb-[20px] pt-[7px] flex justify-between"
 			>
 				<div v-if="editingTitle">
 					<div>
@@ -103,9 +103,9 @@
 			</div>
 
 			<div>
-				<Accordion class="w-full pt-[5px] pb-3">
+				<AccordionCustomer class="w-full pt-[5px] pb-3 pl">
 					<template v-slot:title>
-						<span class="font-medium text-lg"
+						<span class="font-medium text-lg ml-[16px]"
 							>Contacts ({{
 								customerDoc.contact_count == null
 									? "0"
@@ -117,29 +117,29 @@
 					<template v-slot:contact>
 						<div
 							v-for="contact in contactDoc"
-							class="flex pl-[22px] w-[75%] justify-between font-normal text-sm py-3 border-b border-[#F4F5F6]-400 mx-5"
+							class="flex pl-[22px] font-normal text-sm py-3 border-b border-[#F4F5F6]-200 mx-5"
 						>
-							<div>
+							<div class="w-[30%]">
 								<router-link
 									:to="`/frappedesk/contacts/${contact.name}`"
 								>
 									{{ contact.name }}
 								</router-link>
 							</div>
-							<div>
+							<div class="w-[20%]">
 								{{ contact.email_ids[0].email_id }}
 							</div>
-							<div>
+							<div class="w-[20%]">
 								{{ contact.phone_nos[0].phone }}
 							</div>
 						</div>
 					</template>
-				</Accordion>
+				</AccordionCustomer>
 			</div>
 			<div>
-				<Accordion class="w-full pt-[5px]">
+				<AccordionCustomer class="w-full pt-[5px]">
 					<template v-slot:title>
-						<span class="font-medium text-lg"
+						<span class="font-medium text-lg ml-[16px]"
 							>Tickets ({{
 								customerDoc.ticket_count == null
 									? "0"
@@ -151,13 +151,17 @@
 					<template v-slot:ticket>
 						<div
 							v-for="ticket in ticketDoc"
-							class="flex justify-between w-[100%] pl-[45px] py-3 items-center"
+							class="flex w-[100%] pl-[22px] font-normal text-sm py-3 mx-5"
 						>
-							<div class="font-normal text-sm text-[#74808B]">
+							<div
+								class="font-normal w-[10%] text-sm text-[#74808B]"
+							>
 								{{ ticket.name }}
 							</div>
 
-							<div class="font-semibold text-sm text-[#192734]">
+							<div
+								class="w-[40%] font-semibold text-sm text-[#192734]"
+							>
 								<router-link
 									:to="`/frappedesk/tickets/${ticket.name}`"
 								>
@@ -166,37 +170,42 @@
 							</div>
 
 							<div
-								class="font-normal text-xs"
+								class="w-[10%] font-normal text-xs"
 								:class="getStatusStyle(ticket.status)"
 							>
 								{{ ticket.status }}
 							</div>
 
 							<div
-								class="font-medium text-xs"
+								class="w-[10%] font-medium text-xs"
 								:class="getTypeStyle(ticket.ticket_type)"
 							>
 								{{ ticket.ticket_type }}
 							</div>
 
-							<div class="font-normal text-xs text-[#74808B]">
+							<div
+								class="w-[10%] font-normal text-xs text-[#74808B]"
+							>
 								{{ ticket.priority }}
 							</div>
 
-							<div class="font-normal text-sm text-[#74808B]">
+							<div
+								class="w-[10%] font-normal text-sm text-[#74808B]"
+							>
 								{{ ticket.contact }}
 							</div>
 
-							<div v-for="contact in this.contactList">
-								<Avatar
+							
+								<!-- <Avatar
+									v-for="contact in contactDoc"
 									:label="user"
 									:imageURL="contact.image"
 									size="md"
-								/>
-							</div>
+								/> -->
+
 						</div>
 					</template>
-				</Accordion>
+				</AccordionCustomer>
 			</div>
 		</div>
 
@@ -224,7 +233,7 @@
 import { Dropdown, Avatar } from "frappe-ui"
 import { ref, toRaw } from "vue"
 import { Input } from "frappe-ui"
-import Accordion from "@/components/global/Accordion.vue"
+import AccordionCustomer from "@/components/global/AccordionCustomer.vue"
 import CustomIcons from "@/components/desk/global/CustomIcons.vue"
 import NewContactDialog from "@/components/desk/global/NewContactDialog.vue"
 import NewTicketDialog from "@/components/desk/tickets/NewTicketDialog.vue"
@@ -232,13 +241,13 @@ export default {
 	name: "CustomerInfo",
 	props: ["customer"],
 	components: {
-		Accordion,
 		Dropdown,
 		CustomIcons,
 		NewContactDialog,
 		NewTicketDialog,
 		Input,
 		Avatar,
+		AccordionCustomer,
 	},
 
 	data() {
