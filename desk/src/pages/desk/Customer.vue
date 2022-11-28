@@ -5,7 +5,7 @@
 				Customers
 			</div>
 		</div>
-		<div class="flex flex-row w-full h-full">
+		<div class="customer">
 			<CustomerInfo
 				class="flex border-r border-[#F4F5F6] w-full"
 				:customer="customerId"

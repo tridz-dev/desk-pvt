@@ -1,115 +1,111 @@
 <template>
-	<div class="flex flex-col">
-			<div class="customer-info flex-1">
-				<div class="flex flex-row">
-					<div class="info basis-1/2 m-[20px]">
-						<div v-if="editingTitle">
-							<div>
-								<Input
-									label="Customer Name"
-									type="text"
-									v-model="customer"
-								/>
-							</div>
-							<div>
-								<Input
-									label="Domain"
-									type="text"
-									v-model="values.domain"
-								/>
-							</div>
+	<div class="flex">
+		<div class="w-full">
+			<div
+				class="pl-[20px] pr-[16px] pb-[20px] pt-[7px] flex justify-between"
+			>
+				<div v-if="editingTitle">
+					<div>
+						<Input
+							label="Customer Name"
+							type="text"
+							v-model="customer"
+						/>
+					</div>
+					<div>
+						<Input
+							label="Domain"
+							type="text"
+							v-model="values.domain"
+						/>
+					</div>
+				</div>
+				<div v-else>
+					<div class="flex">
+						<div
+							class="bg-[#90C5F4] w-14 h-14 justify-center flex items-center rounded-md font-medium text-white text-2xl"
+						>
+							<span>{{ acronym[0] }} {{ acronym[1] }}</span>
 						</div>
-						<div v-else>
-							<div class="flex">
-								<div
-									class="bg-[#90C5F4] w-14 h-14 justify-center flex items-center rounded-md font-medium text-white text-2xl"
-								>
-									<span>{{ acronym[0] }} {{ acronym[1] }}</span>
-								</div>
-								<div class="pl-4">
-									<div class="font-medium text-2xl w-full">
-										{{ values.customerName }}
-									</div>
+						<div class="pl-4">
+							<div class="font-medium text-2xl w-full">
+								{{ values.customerName }}
+							</div>
 
-									<div class="font-light text-base">
-										{{ values.domain }}
-									</div>
-								</div>
+							<div class="font-light text-base">
+								{{ values.domain }}
 							</div>
 						</div>
 					</div>
-					
-					<div class="actions basis-1/2 m-[20px]">
-						<div v-if="editingTitle" class="flex flex-row justify-end">
-							<Button
-								class="mr-1"
-								appearance="primary"
-								@click="
-									() => {
-										updateCustomer()
-										editingTitle = false
-									}
-								"
-								>Save</Button
-							>
-							<Button
-								class="mr-1"
-								appearance="secondary"
-								@click="
-									() => {
-										editingTitle = false
-										$resources.customer.reload()
-									}
-								"
-								>Discard</Button
-							>
-						</div>
-						<div v-else class="flex flex-row justify-end">
-							<Button
-								class="mr-1"
-								appearance="secondary"
-								icon-left="edit"
-								@click="editingTitle = true"
-								>Edit</Button
-							>
-							<Button
-								class="mr-1"
-								appearance="secondary"
-								icon-left="trash"
-								@click="deleteCustomer()"
-								>Delete</Button
-							>
-							<Button
-								class="mr-1"
-								appearance="secondary"
-								icon-left="plus"
-								@click="
-									() => {
-										showNewContactDialog = true
-									}
-								"
-								>Add Contact</Button
-							>
-							<Button
-								class="mr-1"
-								appearance="secondary"
-								icon-left="plus"
-								@click="
-									() => {
-										showNewTicketDialog = true
-									}
-								"
-								>Add Ticket</Button
-							>
-						</div>
-					</div>
-				</div>	
+				</div>
+				<div v-if="editingTitle">
+					<Button
+						class="mr-1"
+						appearance="primary"
+						@click="
+							() => {
+								updateCustomer()
+								editingTitle = false
+							}
+						"
+						>Save</Button
+					>
+					<Button
+						class="mr-1"
+						appearance="secondary"
+						@click="
+							() => {
+								editingTitle = false
+								$resources.customer.reload()
+							}
+						"
+						>Discard</Button
+					>
+				</div>
+				<div v-else>
+					<Button
+						class="mr-1"
+						appearance="secondary"
+						icon-left="edit"
+						@click="editingTitle = true"
+						>Edit</Button
+					>
+					<Button
+						class="mr-1"
+						appearance="secondary"
+						icon-left="trash"
+						@click="deleteCustomer()"
+						>Delete</Button
+					>
+					<Button
+						class="mr-1"
+						appearance="secondary"
+						icon-left="plus"
+						@click="
+							() => {
+								showNewContactDialog = true
+							}
+						"
+						>Add Contact</Button
+					>
+					<Button
+						class="mr-1"
+						appearance="secondary"
+						icon-left="plus"
+						@click="
+							() => {
+								showNewTicketDialog = true
+							}
+						"
+						>Add Ticket</Button
+					>
+				</div>
 			</div>
 
-			<div class="customer-table flex-1">
-				<AccordionCustomer class="customer-accordion flex flex-col">
+			<div>
+				<AccordionCustomer class="w-full pt-[5px] pb-3 pl">
 					<template v-slot:title>
-						<span class="font-medium text-lg"
+						<span class="font-medium text-lg ml-[16px]"
 							>Contacts ({{
 								customerDoc.contact_count == null
 									? "0"
@@ -121,7 +117,7 @@
 					<template v-slot:contact>
 						<div
 							v-for="contact in contactDoc"
-							class="flex font-normal text-sm py-2 items-center space-x-3 mx-5 py-2 px-4 border-b border-[#F4F5F6]-200"							
+							class="flex pl-[22px] font-normal text-sm py-3 border-b border-[#F4F5F6]-200 mx-5"
 						>
 							<div class="w-[30%]">
 								<router-link
@@ -134,20 +130,16 @@
 								{{ contact.email_ids[0].email_id }}
 							</div>
 							<div class="w-[20%]">
-								{{
-									contact.phone_nos.length == 0
-										? ""
-										: contact.phone_nos[0].phone
-								}}
+								{{ contact.phone_nos[0].phone }}
 							</div>
 						</div>
 					</template>
 				</AccordionCustomer>
 			</div>
-			<div class="ticket-table flex-1 mt-5">
-				<AccordionCustomer class="ticket-accordion flex flex-col">
+			<div>
+				<AccordionCustomer class="w-full pt-[5px]">
 					<template v-slot:title>
-						<span class="font-medium text-lg"
+						<span class="font-medium text-lg ml-[16px]"
 							>Tickets ({{
 								customerDoc.ticket_count == null
 									? "0"
@@ -168,7 +160,7 @@
 							</div>
 
 							<div
-								class="w-[40%] font-normal text-sm text-[#192734]"
+								class="w-[40%] font-semibold text-sm text-[#192734]"
 							>
 								<router-link
 									:to="`/frappedesk/tickets/${ticket.name}`"
@@ -178,14 +170,14 @@
 							</div>
 
 							<div
-								class="w-[10%] font-normal text-xs text-[#74808B]"
+								class="w-[10%] font-normal text-xs"
 								:class="getStatusStyle(ticket.status)"
 							>
 								{{ ticket.status }}
 							</div>
 
 							<div
-								class="w-[10%] font-medium text-xs text-[#74808B]"
+								class="w-[10%] font-medium text-xs"
 								:class="getTypeStyle(ticket.ticket_type)"
 							>
 								{{ ticket.ticket_type }}
@@ -203,17 +195,19 @@
 								{{ ticket.contact }}
 							</div>
 
-							<!-- <Avatar
+							
+								<!-- <Avatar
 									v-for="contact in contactDoc"
 									:label="user"
 									:imageURL="contact.image"
 									size="md"
 								/> -->
+
 						</div>
 					</template>
 				</AccordionCustomer>
 			</div>
-		
+		</div>
 
 		<NewContactDialog
 			v-model="showNewContactDialog"
