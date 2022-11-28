@@ -25,7 +25,13 @@
 					<div class="flex float-right space-x-2">
 						<Button
 							appearance="primary"
-							@click="addCustomer()"
+							@click="
+								() => {
+									addCustomer()
+									close()
+									this.$router.go()
+								}
+							"
 							class="mr-auto"
 							>Add</Button
 						>
