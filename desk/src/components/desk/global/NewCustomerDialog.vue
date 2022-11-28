@@ -1,17 +1,26 @@
 <template>
 	<div>
-		<Dialog :options="{ title: 'Create New Customer' }" v-model="open">
+		<Dialog
+			:options="{ title: 'Add New Customer', size: 'xs' }"
+			v-model="open"
+		>
 			<template #body-content>
 				<div class="space-y-4">
 					<div class="space-y-1">
 						<Input
 							label="Customer Name"
 							type="text"
+							placeholder="Tesla Inc."
 							v-model="customer"
 						/>
 					</div>
 					<div class="space-y-1">
-						<Input label="Domain" type="text" v-model="domain" />
+						<Input
+							label="Domain"
+							type="text"
+							placeholder="eg: tesla.com, mycompany.com"
+							v-model="domain"
+						/>
 					</div>
 					<div class="flex float-right space-x-2">
 						<Button
@@ -51,7 +60,7 @@ export default {
 		})
 
 		return {
-			open
+			open,
 		}
 	},
 	components: {
@@ -89,10 +98,8 @@ export default {
 		newCustomer() {
 			return {
 				method: "frappe.client.insert",
-                onSuccess: (doc) => {
-					this.$router.push(
-						`/frappedesk/customers`
-					)
+				onSuccess: (doc) => {
+					this.$router.push(`/frappedesk/customers`)
 				},
 			}
 		},
