@@ -2,7 +2,7 @@
 	<div>
 		<button
 			@click="toggleAccordion()"
-			class="flex items-center space-x-3 pl-[20px]"
+			class="flex items-center space-x-3 pl-[20px] bg-[#F9FAFA]"
 			:aria-expanded="isOpen"
 			:aria-controls="`collapse${_uid}`"
 		>
@@ -15,18 +15,11 @@
 			/>
 			<slot name="title" />
 		</button>
-		<div
-			v-show="isOpen"
-			:id="`collapse${_uid}`"
-		>
+		<div v-show="!isOpen" :id="`collapse${_uid}`">
 			<slot name="contact" />
 		</div>
 
-		<div
-			
-			v-show="isOpen"
-			:id="`collapse${_uid}`"
-		>
+		<div v-show="isOpen" :id="`collapse${_uid}`">
 			<slot name="ticket" />
 		</div>
 
