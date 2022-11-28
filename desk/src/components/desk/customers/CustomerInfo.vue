@@ -151,7 +151,7 @@
 					<template v-slot:ticket>
 						<div
 							v-for="ticket in ticketDoc"
-							class="flex justify-between w-[75%] pl-[45px] py-3 items-center"
+							class="flex justify-between w-[100%] pl-[45px] py-3 items-center"
 						>
 							<div class="font-normal text-sm text-[#74808B]">
 								{{ ticket.name }}
@@ -161,9 +161,8 @@
 								<router-link
 									:to="`/frappedesk/tickets/${ticket.name}`"
 								>
-								{{ ticket.subject }}
+									{{ ticket.subject }}
 								</router-link>
-								
 							</div>
 
 							<div
