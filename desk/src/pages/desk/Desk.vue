@@ -78,17 +78,17 @@ export default {
 			if (!this.user.isLoggedIn()) return false
 			if (!this.user.has_desk_access) return false
 			if (this.$resources.frappedeskSettings.loading) return false
-			// if (!this.$resources.frappedeskSettings.data.initial_agent_set) {
-			// 	this.$resources.setupInitialAgent.submit()
-			// 	return false
-			// }
-			// if (
-			// 	!this.$resources.frappedeskSettings.data
-			// 		.initial_demo_ticket_created
-			// ) {
-			// 	this.$resources.createInitialDemoTicket.submit()
-			// 	return false
-			// }
+			if (!this.$resources.frappedeskSettings.data.initial_agent_set) {
+				this.$resources.setupInitialAgent.submit()
+				return false
+			}
+			if (
+				!this.$resources.frappedeskSettings.data
+					.initial_demo_ticket_created
+			) {
+				this.$resources.createInitialDemoTicket.submit()
+				return false
+			}
 
 			return true
 		},
