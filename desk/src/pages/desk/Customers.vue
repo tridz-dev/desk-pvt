@@ -5,11 +5,13 @@
 			:options="{
 				cache: ['FD Customer', 'Desk'],
 				doctype: 'FD Customer',
+				urlQueryFilters: true,
+				saveFiltersLocally: true,
 				fields: [
 					'customer_name',
 					'domain',
 					'contact_count',
-					'ticket_count'
+					'ticket_count',
 				],
 				limit: 20,
 			}"
@@ -31,8 +33,8 @@
 							},
 							ticket_count: {
 								label: 'Tickets',
-								width: '4'
-							}
+								width: '4',
+							},
 						},
 					}"
 					class="text-base h-[100vh] pt-4"
