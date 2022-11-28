@@ -103,7 +103,7 @@
 			</div>
 
 			<div>
-				<Accordion class="w-full pt-[5px]">
+				<Accordion class="w-full pt-[5px] pb-3">
 					<template v-slot:title>
 						<span class="font-medium text-lg"
 							>Contacts ({{
@@ -114,15 +114,17 @@
 						</span>
 					</template>
 
-					<template
-						v-slot:contact
-						v-for="contact in this.contactList"
-					>
+					<template v-slot:contact>
 						<div
+							v-for="contact in contactDoc"
 							class="flex pl-[22px] w-[75%] justify-between font-normal text-sm py-3 border-b border-[#F4F5F6]-400 mx-5"
 						>
 							<div>
-								{{ contact.name }}
+								<router-link
+									:to="`/frappedesk/contacts/${contact.name}`"
+								>
+									{{ contact.name }}
+								</router-link>
 							</div>
 							<div>
 								{{ contact.email_ids[0].email_id }}
@@ -146,25 +148,35 @@
 						</span>
 					</template>
 
-					<template v-slot:ticket v-for="ticket in this.ticketList">
+					<template v-slot:ticket>
 						<div
-							class="flex justify-between w-[75%] pl-[45px] py-3"
+							v-for="ticket in ticketDoc"
+							class="flex justify-between w-[75%] pl-[45px] py-3 items-center"
 						>
 							<div class="font-normal text-sm text-[#74808B]">
 								{{ ticket.name }}
 							</div>
 
 							<div class="font-semibold text-sm text-[#192734]">
-								<a>
-									{{ ticket.subject }}
-								</a>
+								<router-link
+									:to="`/frappedesk/tickets/${ticket.name}`"
+								>
+								{{ ticket.subject }}
+								</router-link>
+								
 							</div>
 
-							<div class="font-normal text-xs">
+							<div
+								class="font-normal text-xs"
+								:class="getStatusStyle(ticket.status)"
+							>
 								{{ ticket.status }}
 							</div>
 
-							<div class="font-medium text-xs">
+							<div
+								class="font-medium text-xs"
+								:class="getTypeStyle(ticket.ticket_type)"
+							>
 								{{ ticket.ticket_type }}
 							</div>
 
@@ -176,8 +188,12 @@
 								{{ ticket.contact }}
 							</div>
 
-							<div>
-								{{ customer.image }}
+							<div v-for="contact in this.contactList">
+								<Avatar
+									:label="user"
+									:imageURL="contact.image"
+									size="md"
+								/>
 							</div>
 						</div>
 					</template>
@@ -206,8 +222,8 @@
 </template>
 
 <script>
-import { Dropdown } from "frappe-ui"
-import { ref } from "vue"
+import { Dropdown, Avatar } from "frappe-ui"
+import { ref, toRaw } from "vue"
 import { Input } from "frappe-ui"
 import Accordion from "@/components/global/Accordion.vue"
 import CustomIcons from "@/components/desk/global/CustomIcons.vue"
@@ -223,13 +239,12 @@ export default {
 		NewContactDialog,
 		NewTicketDialog,
 		Input,
+		Avatar,
 	},
 
 	data() {
 		return {
 			editingTitle: false,
-			contactList: [],
-			ticketList: [],
 			showNewContactDialog: false,
 			showNewTicketDialog: false,
 		}
@@ -245,6 +260,7 @@ export default {
 			return this.$resources.ticket.data
 		},
 		contactDoc() {
+			console.log(toRaw(this.$resources.contact.data, "bro"))
 			return this.$resources.contact.data
 		},
 		customerDoc() {
@@ -277,10 +293,6 @@ export default {
 				},
 
 				auto: true,
-				onSuccess: (doc) => {
-					this.contactList = doc
-					return this.contactList
-				},
 			}
 		},
 		ticket() {
@@ -294,24 +306,13 @@ export default {
 					},
 				},
 				auto: true,
-				onSuccess: (doc) => {
-					this.ticketList = doc
-					return this.ticketList
-				},
 			}
 		},
 	},
 
 	methods: {
 		deleteCustomer() {
-			return {
-				method: "frappe.client.delete",
-				params: {
-					doctype: "FD Customer",
-					name: this.customer,
-				},
-				auto: true,
-
+			return this.$resources.customer.delete.submit(null, {
 				onSuccess: () => {
 					this.$toast({
 						title: "Customer deleted",
@@ -320,6 +321,7 @@ export default {
 					})
 					this.resetForm()
 				},
+				auto: true,
 
 				onError: (e) => {
 					console.log(e)
@@ -330,7 +332,7 @@ export default {
 						appearance: "danger",
 					})
 				},
-			}
+			})
 		},
 		updateCustomer() {
 			this.$resources.customer.setValue.submit({
@@ -353,6 +355,24 @@ export default {
 					query: this.$route.query,
 				})
 			}
+		},
+		getStatusStyle(status) {
+			const color = {
+				Open: "#38A160",
+				Replied: "#FF7C36",
+				Resolved: "#E24C4C",
+				Closed: "#E24C4C",
+			}[status]
+			return `border-[${color}] text-[${color}]`
+		},
+
+		getTypeStyle(ticket_type) {
+			const color = {
+				Question: "#B7B6FC",
+				Bug: "#E24C4C",
+				Incident: "#FF7C36",
+			}[ticket_type]
+			return `border-[${color} text-[${color}]]`
 		},
 	},
 }
