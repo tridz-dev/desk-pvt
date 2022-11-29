@@ -2,25 +2,19 @@
 	<div>
 		<button
 			@click="toggleAccordion()"
-			class="flex py-2 items-center space-x-3 mx-5 py-2 px-4 bg-[#F9FAFA] rounded"
+			class="flex flex-row py-2 mx-5 py-2 px-4 bg-[#F9FAFA] rounded text-left items-center"
 			:aria-expanded="isOpen"
 			:aria-controls="`collapse${_uid}`"
 		>
 			<slot name="title" />
 			<CustomIcons
-				:class="{
-					'rotate-180': isOpen,
-					'rotate-180': !isOpen,
-				}"
+				class="float-right"
+				:class="{ 'rotate-180': isOpen }"
 				name="chevron-down-accordion"
 			/>
 		</button>
 		<div v-show="!isOpen" :id="`collapse${_uid}`">
-			<slot name="contact" />
-		</div>
-
-		<div v-show="isOpen" :id="`collapse${_uid}`">
-			<slot name="ticket" />
+			<slot name="data" />
 		</div>
 	</div>
 </template>
