@@ -78,7 +78,9 @@
 												@click="$emit('add-item')"
 											>
 												{{
-													`Add ${manager.options.doctype}`
+													options.name != null
+														? `Add ${options.name}`
+														: `Add ${manager.options.doctype}`
 												}}
 											</Button>
 										</slot>
