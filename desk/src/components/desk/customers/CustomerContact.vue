@@ -234,7 +234,7 @@ export default {
 				auto: true,
 
 				onError: (e) => {
-					console.log(e)
+					
 					this.$toast({
 						title: "Cannot delete customer",
 						text: e,
