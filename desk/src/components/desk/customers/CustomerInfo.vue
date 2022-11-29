@@ -72,13 +72,15 @@
 							@click="editingTitle = true"
 							>Edit</Button
 						>
-						<Button
+						<!-- TO DO -->
+						<!-- <Button
 							class="mr-1"
 							appearance="secondary"
 							icon-left="trash"
 							@click="deleteCustomer()"
 							>Delete</Button
-						>
+						> -->
+
 						<Button
 							class="mr-1"
 							appearance="secondary"
@@ -197,17 +199,8 @@
 							{{ ticket.priority }}
 						</div>
 
-						<div
-							v-for="contact in contactDoc"
-							class="w-[10%] font-normal text-sm text-[#74808B]"
-						>
-							{{
-								contact.name == ticket.contact
-									? contact.first_name +
-									  " " +
-									  contact.last_name
-									: ""
-							}}
+						<div class="w-[10%] font-normal text-sm text-[#74808B]">
+							{{ ticket.contact }}
 						</div>
 						<!-- <div class="w-[10%]" v-for="contact in contactDoc">
 							<Avatar
@@ -228,6 +221,9 @@
 
 		<NewContactDialog
 			v-model="showNewContactDialog"
+			:options="{
+				fdCustomer: customer,
+			}"
 			@contact-created="
 				() => {
 					showNewContactDialog = false
@@ -236,6 +232,7 @@
 		/>
 		<NewTicketDialog
 			v-model="showNewTicketDialog"
+			:fdCustomer="customer"
 			@close="showNewTicketDialog = false"
 			@ticket-created="
 				() => {

@@ -19,6 +19,7 @@
 			<template #body>
 				<ListViewer
 					:options="{
+						name: 'Customer',
 						base: '12',
 						filterBox: true,
 						presetFilters: true,
@@ -29,11 +30,11 @@
 							},
 							contact_count: {
 								label: 'Contacts',
-								width: '4',
+								width: '2',
 							},
 							ticket_count: {
 								label: 'Tickets',
-								width: '4',
+								width: '2',
 							},
 						},
 					}"

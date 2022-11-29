@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Dialog
-			:options="{ title: 'Add New Customer', size: 'xs' }"
+			:options="{ title: 'Add New Customer', size: 'sm' }"
 			v-model="open"
 		>
 			<template #body-content>
