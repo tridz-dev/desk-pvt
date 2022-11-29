@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "image",
   "customer_name",
   "domain",
   "contact_html",
@@ -52,11 +53,17 @@
    "in_standard_filter": 1,
    "label": "Ticket Count",
    "read_only": 1
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Image"
   }
  ],
+ "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-11-28 12:54:16.628925",
+ "modified": "2022-11-29 22:50:55.937891",
  "modified_by": "Administrator",
  "module": "FrappeDesk",
  "name": "FD Customer",
