@@ -2,7 +2,7 @@
 	<div>
 		<Dialog
 			:options="{ title: 'New canned response', size: '3xl' }"
-			:show="show"
+			v-model="open"
 			@close="close()"
 			class="bg-white px-6 py-5 pb-1 pt-6"
 		>
@@ -62,11 +62,17 @@
 
 <script>
 import { Dialog, Input, FeatherIcon, ErrorMessage, TextEditor } from "frappe-ui"
+import { computed } from "vue"
 import { ref } from "@vue/reactivity"
 import { TextEditorFixedMenu } from "frappe-ui/src/components/TextEditor"
 export default {
 	name: "AddNewCannedResponsesDialog",
-	props: ["show"],
+	props: {
+		modelValue: {
+			type: Boolean,
+			required: true,
+		},
+	},
 	components: {
 		Dialog,
 		Input,
@@ -75,12 +81,22 @@ export default {
 		TextEditor,
 		TextEditorFixedMenu,
 	},
-	setup() {
+	setup(props, { emit }) {
 		const titleValidationError = ref("")
 		const messageValidationError = ref("")
+		let open = computed({
+			get: () => props.modelValue,
+			set: (val) => {
+				emit("update:modelValue", val)
+				if (!val) {
+					emit("close")
+				}
+			},
+		})
 		return {
 			titleValidationError,
 			messageValidationError,
+			open,
 		}
 	},
 

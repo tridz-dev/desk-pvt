@@ -1,40 +1,57 @@
 <template>
-	<div class="mt-[9px]">
+	<div class="flex flex-col h-full px-4">
 		<ListManager
-			ref="listManager"
-			class="px-[16px]"
+			ref="cannedResponseList"
 			:options="{
+				cache: ['Canned Response', 'Desk'],
 				doctype: 'Canned Response',
 				fields: ['title', 'owner'],
+				urlQueryFilters: true,
+				saveFiltersLocally: true,
 				limit: 20,
 			}"
-			@selection="
-				(selectedItems) => {
-					if (Object.keys(selectedItems).length > 0) {
-						$event.emit(
-							'show-top-panel-actions-settings',
-							'Canned Responses Bulk'
-						)
-					} else {
-						$event.emit(
-							'show-top-panel-actions-settings',
-							'CannedResponses'
-						)
-					}
-				}
-			"
 		>
-			<template #body="{ manager }">
-				<CannedResponseList :manager="manager" />
+			<template #body>
+				<ListViewer
+					:options="{
+						base: '12',
+						filterBox: true,
+						presetFilters: true,
+						fields: {
+							title: {
+								label: 'Title',
+								width: '6',
+							},
+							owner: {
+								label: 'Author',
+								width: '6',
+							},
+						},
+					}"
+					class="text-base h-[100vh] pt-4"
+					@add-item="
+						() => {
+							showNewCannedResponsesDialog = true
+						}
+					"
+				>
+					<template #field-title="{ row }">
+						<router-link
+							:to="{
+								path: `/frappedesk/settings/canned_responses/${row.name}`,
+							}"
+						>
+							{{ `${row.title}` }}
+						</router-link>
+					</template>
+				</ListViewer>
 			</template>
 		</ListManager>
 		<AddNewCannedResponsesDialog
-			:show="showNewCannedResponsesDialog"
+			v-model="showNewCannedResponsesDialog"
 			@close="
 				() => {
 					showNewCannedResponsesDialog = false
-					$refs.listManager.manager.reload()
-					$router.go()
 				}
 			"
 		/>
@@ -44,28 +61,34 @@
 import { inject, ref } from "vue"
 import CannedResponseList from "@/components/desk/settings/canned_responses/CannedResponseList.vue"
 import ListManager from "@/components/global/ListManager.vue"
+import ListViewer from "@/components/global/ListViewer.vue"
 import AddNewCannedResponsesDialog from "@/components/desk/global/AddNewCannedResponsesDialog.vue"
 export default {
 	name: "Canned Responses",
 	components: {
 		CannedResponseList,
 		ListManager,
+		ListViewer,
 		AddNewCannedResponsesDialog,
 	},
+
+	data() {
+		return {
+			showNewCannedResponsesDialog: false,
+		}
+	},
 	setup() {
-		const viewportWidth = inject("viewportWidth")
 		const showNewCannedResponsesDialog = ref(false)
 		return {
-			viewportWidth,
 			showNewCannedResponsesDialog,
 		}
 	},
 	mounted() {
-		this.$event.emit("set-selected-setting", "Canned Responses")
-		this.$event.emit("show-top-panel-actions-settings", "CannedResponses")
-		this.$event.on("show-new-canned_response-dialog", () => {
-			this.showNewCannedResponsesDialog = true
-		})
+		// this.$event.emit("set-selected-setting", "Canned Responses")
+		// this.$event.emit("show-top-panel-actions-settings", "CannedResponses")s
+		// this.$event.on("show-new-canned_response-dialog", () => {
+		// 	this.showNewCannedResponsesDialog = true
+		// })
 		this.$event.on("delete-selected-canned_responses", () => {
 			this.$resources.bulk_delete_responses.submit({
 				items: Object.keys(
@@ -76,7 +99,7 @@ export default {
 		})
 	},
 	unmounted() {
-		this.$event.off("show-new-canned_response-dialog")
+		// this.$event.off("show-new-canned_response-dialog")
 		this.$event.off("delete-selected-canned_responses")
 	},
 	resources: {
@@ -94,10 +117,10 @@ export default {
 						customIcon: "circle-check",
 						appearance: "success",
 					})
-					this.$event.emit(
-						"show-top-panel-actions-settings",
-						"CannedResponses"
-					)
+					// this.$event.emit(
+					// 	"show-top-panel-actions-settings",
+					// 	"CannedResponses"
+					// )
 				},
 			}
 		},
