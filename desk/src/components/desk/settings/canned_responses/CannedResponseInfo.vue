@@ -1,6 +1,16 @@
 <template>
-	<div>
-		<div>
+	<div class="min-w-[490px]">
+		<div class="shrink-0 flow-root px-[16px]">
+			<!-- <div class="float-left">
+				<router-link
+					:to="`/frappedesk/settings/canned_response`"
+					class="my-1 text-[12px] text-gray-600 stroke-gray-600 flex flex-row items-center space-x-1 hover:text-gray-700 hover:stroke-gray-700 select-none"
+					role="button"
+				>
+					<FeatherIcon name="arrow-left" class="w-[13px] h-[13px]" />
+					<div>Back to response list</div>
+				</router-link>
+			</div> -->
 			<div class="float-right">
 				<div v-if="!editMode" class="flex flex-row space-x-2">
 					<Button
