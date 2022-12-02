@@ -1,12 +1,7 @@
 <template>
 	<div>
-		<div
-			v-if="!editable"
-			class="flex flex-col space-y-[16px] rounded-[8px] border shadow-sm p-[32px]"
-		>
-			<div
-				class="font-semibold text-[24px] prose prose-p:my-1 border-b pb-[16px] mb-[10px]"
-			>
+		<div v-if="!editable" class="flex flex-col h-full">
+			<div class="text-[24px] font-semibold">
 				{{ title }}
 			</div>
 			<div
