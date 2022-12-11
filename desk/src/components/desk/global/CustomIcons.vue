@@ -1364,6 +1364,29 @@
 				stroke="#687178"
 			/>
 		</svg>
+		<svg
+			v-if="this.name == 'arrow-up-right'"
+			:class="this.class"
+			:width="this.width"
+			:height="this.height"
+			viewBox="0 0 11 12"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				d="M1 10.6667L10.3333 1.33342"
+				stroke="#A6B1B9"
+				stroke-miterlimit="10"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+			<path
+				d="M10.3333 8.66671V1.33337H3"
+				stroke="#A6B1B9"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+		</svg>
 		<div v-if="this.name == 'company'" :class="this.class">
 			<div
 				v-if="$resources.brandHtml.data"
