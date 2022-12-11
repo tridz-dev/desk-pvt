@@ -1,22 +1,38 @@
 <template>
-	<div class="flex flex-col">
+	<div class="flex flex-col overflow-scroll">
 		<div class="flex border-b h-[52px] px-[24px] shrink-0">
 			<div class="grow my-auto text-[16px] font-semibold text-gray-900">
 				Dashboard
 			</div>
 		</div>
-		<TicketTrends />
+		<div class="mt-3.5 mr-8 ml-8">Welcome, Fadil</div>
+		<TicketStatus />
+		<div class="grid grid-cols-2">
+			<TicketTrends class="w-50" />
+			<TicketSummary class="w-50" />
+			<TicketSummaryTest class="w-50" />
+			<TicketType class="w-50" />
+		</div>
+		<SlaSummary />
 	</div>
 </template>
 
 <script>
 import TicketTrends from "@/components/desk/dashboard/TicketTrends.vue"
 import TicketSummary from "@/components/desk/dashboard/TicketSummary.vue"
+import TicketType from "@/components/desk/dashboard/TicketType.vue"
+import TicketStatus from "@/components/desk/dashboard/TicketStatus.vue"
+import TicketSummaryTest from "@/components/desk/dashboard/TicketSummaryTest.vue"
+import SlaSummary from "@/components/desk/dashboard/SlaSummary.vue"
 export default {
 	name: "Dashboard",
 	components: {
 		TicketTrends,
 		TicketSummary,
+		TicketType,
+		TicketStatus,
+		TicketSummaryTest,
+		SlaSummary,
 	},
 }
 </script>
