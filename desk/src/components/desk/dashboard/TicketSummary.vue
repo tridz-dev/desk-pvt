@@ -5,7 +5,7 @@
 <script>
 import { use } from "echarts/core"
 import { CanvasRenderer } from "echarts/renderers"
-import { BarChart } from "echarts/charts"
+import { BarChart, LineChart } from "echarts/charts"
 import {
 	TitleComponent,
 	GridComponent,
@@ -17,6 +17,7 @@ import VChart from "vue-echarts"
 use([
 	CanvasRenderer,
 	BarChart,
+	LineChart,
 	TitleComponent,
 	TooltipComponent,
 	LegendComponent,
@@ -30,14 +31,26 @@ export default {
 	},
 	data() {
 		const option = {
-				xAxis: {
-					data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+				title: {
+					text: "Tickets Summary",
+					left: "center",
 				},
-				yAxis: {},
+				xAxis: {
+					data: ["24/6", "25/6", "26/6", "27/6", "28/6", "29/6"],
+				},
+				yAxis: { type: "value" },
 				series: [
 					{
-						type: "bar",
-						data: [23, 24, 18, 25, 27, 28, 25],
+						type: "line",
+						data: [23, 24, 18, 22, 27, 29, 30, 31],
+					},
+					{
+						type: "line",
+						data: [29, 26, 34, 22, 18, 26, 25, 20],
+					},
+					{
+						type: "line",
+						data: [27, 28, 25, 26, 27, 28, 29, 30],
 					},
 				],
 			},
@@ -51,9 +64,6 @@ export default {
 		}
 	},
 
-	methods: {
-		getContacts() {},
-	},
 }
 </script>
 

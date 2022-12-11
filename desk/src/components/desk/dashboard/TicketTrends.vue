@@ -1,56 +1,85 @@
 <template>
-	<template>
-		<div>
-			<div ref="chart" style="width: 100%; height: 400px"></div>
-		</div>
-	</template>
+	<v-chart class="chart" :option="option" />
 </template>
 
 <script>
-import * as echarts from "echarts"
+import ECharts from "vue-echarts"
+import "echarts/lib/chart/line"
+import "echarts/lib/component/polar"
 
 export default {
-	name: "TicketTrends",
-	props: ["options", "type"],
+	components: {
+		"v-chart": ECharts,
+	},
 	data() {
-		return {
-			chart: null,
-			data: [
-				{ name: "Point 1", value: 10 },
-				{ name: "Point 2", value: 20 },
-				{ name: "Point 3", value: 30 },
+		let ticketCount = []
+		let ticketMonth = []
+		let option = {
+			title: {
+				text: "Ticket Trends",
+				left: "center",
+			},
+			tooltip: {
+				trigger: "axis",
+			},
+			xAxis: {
+				type: "category",
+				data: ticketMonth,
+			},
+			yAxis: {
+				type: "value",
+			},
+			series: [
+				{
+					data: ticketCount,
+					type: "line",
+					showSymbol: false,
+					lineStyle: {
+						width: 3,
+						shadowColor: "rgba(0,0,0,0.3)",
+						shadowBlur: 10,
+						shadowOffsetY: 8,
+					},
+				},
 			],
 		}
-	},
-	mounted() {
-		this.loadChart()
+
+		return {
+			ticketCount,
+			ticketMonth,
+			option,
+		}
 	},
 
 	methods: {
-		loadChart() {
-			this.chart = echarts.init(this.$refs.chart)
-			this.fetchData()
+		count() {
+			this.$resources.getTicketCount.fetch()
 		},
-		fetchData() {
-			console.log(this.data.map((point) => point.name))
-			this.chart.setOption({
-				xAxis: {
-					type: "category",
-					data: this.data.map((point) => point.name),
+	},
+	resources: {
+		getTicketCount() {
+			return {
+				method: "frappedesk.api.dashboard.get_ticket_count",
+				onSuccess: (res) => {
+					res.map((value) => {
+						console.log(value)
+						this.ticketCount.push(value.count)
+						this.ticketMonth.push(
+							new Date(value.opening_date).toLocaleDateString(
+								"en-US",
+								{ year: "2-digit", month: "short" }
+							)
+						)
+					})
 				},
-				yAxis: {
-					type: "value",
-				},
-				series: [
-					{
-						type: "bar",
-						data: this.data.map((val) => {
-							val.value
-						}),
-					},
-				],
-			})
+				auto: true,
+			}
 		},
 	},
 }
 </script>
+<style scoped>
+.chart {
+	height: 50vh;
+}
+</style>
