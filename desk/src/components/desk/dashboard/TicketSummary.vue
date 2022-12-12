@@ -30,6 +30,10 @@ export default {
 		VChart,
 	},
 	data() {
+		let data = [
+			{ date: "20/6", replied: 2, resolved: 2, open: 2 },
+			{ date: "22/6", replied: 2, resolved: 4, open: 5 },
+		]
 		const option = {
 				title: {
 					text: "Tickets Summary",
@@ -64,6 +68,24 @@ export default {
 		}
 	},
 
+	methods: {
+		getStatus() {
+			console.log(this.$resources.ticketStatus.fetch())
+			this.$resources.ticketStatus.fetch()
+		},
+	},
+
+	resources: {
+		ticketStatus() {
+			return {
+				method: "frappedesk.api.dashboard.ticket_status",
+				onSuccess: (res) => {
+					console.log(res)
+				},
+				auto: true,
+			}
+		},
+	},
 }
 </script>
 

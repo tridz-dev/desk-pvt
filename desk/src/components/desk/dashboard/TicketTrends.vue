@@ -61,15 +61,49 @@ export default {
 			return {
 				method: "frappedesk.api.dashboard.get_ticket_count",
 				onSuccess: (res) => {
+					let holder = {}
 					res.map((value) => {
-						console.log(value)
-						this.ticketCount.push(value.count)
-						this.ticketMonth.push(
-							new Date(value.opening_date).toLocaleDateString(
-								"en-US",
-								{ year: "2-digit", month: "short" }
+						if (
+							holder.hasOwnProperty(
+								new Date(value.creation).toLocaleDateString(
+									"en-US",
+									{ year: "2-digit", month: "short" }
+								)
 							)
-						)
+						) {
+							holder[
+								new Date(value.creation).toLocaleDateString(
+									"en-US",
+									{ year: "2-digit", month: "short" }
+								)
+							] =
+								holder[
+									new Date(value.creation).toLocaleDateString(
+										"en-US",
+										{ year: "2-digit", month: "short" }
+									)
+								] + value.count
+						} else {
+							holder[
+								new Date(value.creation).toLocaleDateString(
+									"en-US",
+									{ year: "2-digit", month: "short" }
+								)
+							] = value.count
+						}
+						console.log(value)
+					})
+					console.log("holder", holder)
+					var arr = []
+					for (var prop in holder) {
+						arr.push({ creation: prop, count: holder[prop] })
+					}
+
+					arr.map((res) => {
+						console.log(res)
+
+						this.ticketCount.push(res.count)
+						this.ticketMonth.push(res.creation)
 					})
 				},
 				auto: true,

@@ -2,13 +2,14 @@ import frappe
 
 @frappe.whitelist()
 def get_ticket_count():
-    ticket_count = frappe.db.get_list('Ticket',fields=['count(name) as count','opening_date'],group_by='opening_date' )
+    ticket_count = frappe.db.get_list('Ticket',fields=['count(name) as count','creation'],group_by='creation')
+
 
     return ticket_count
 
 @frappe.whitelist()
 def ticket_status():
-    ticket_count_by_status = frappe.db.get_list('Ticket',fields=['count(name) as count','status','creation'],group_by='status')
+    ticket_count_by_status = frappe.db.get_list('Ticket',fields=['count(name) as count','status','creation','resolution_date','opening_date','first_responded_on','modified'],group_by='status')
     
     return ticket_count_by_status
 
@@ -27,7 +28,7 @@ def average_first_response_time():
         average_response_time +=ticket.first_response_time
 
     return ((average_response_time)/len(ticket_list))/3600
-    
+
 @frappe.whitelist()
 def average_resolution_time():
     average_resolution_time = float(0.0)
