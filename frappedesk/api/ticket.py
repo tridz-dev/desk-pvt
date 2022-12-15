@@ -510,6 +510,13 @@ def activities(name):
 def submit_customer_feedback(ticket_id, satisfaction_rating, feedback_text):
 	ticket_doc = frappe.get_doc("Ticket", ticket_id)
 	ticket_doc.satisfaction_rating = satisfaction_rating
+	print(ticket_doc.feedback_status,"hello")
+	if satisfaction_rating <= 0.4:
+		ticket_doc.feedback_status = 'Negative'
+	if 0.5 <= satisfaction_rating <= 0.7:
+		ticket_doc.feedback_status = 'Neutral'
+	if satisfaction_rating >= 0.8:
+		ticket_doc.feedback_status = 'Positive'
 	ticket_doc.customer_feedback = feedback_text
 	ticket_doc.feedback_submitted = True
 	ticket_doc.save(ignore_permissions=True)
