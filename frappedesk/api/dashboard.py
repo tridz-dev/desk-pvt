@@ -8,7 +8,13 @@ def get_ticket_count():
 
 @frappe.whitelist()
 def ticket_summary():
-    ticket_count = frappe.db.sql("""select DATE_FORMAT(creation,'%d-%m'),COUNT(Case when status="Open" then status end) as "Open", COUNT(Case when status="Closed" then status end) as "Closed", COUNT(Case when status="Replied" then status end) as "Replied" from `tabTicket` group by DATE_FORMAT(creation,'%d-%m') ORDER BY DATE_FORMAT(creation,'%m-%d') ASC""")
+    ticket_count = frappe.db.sql("""select DATE_FORMAT(creation,'%d-%m'),
+                                COUNT(Case when status="Open" then status end) as "Open", 
+                                COUNT(Case when status="Closed" then status end) as "Closed", 
+                                COUNT(Case when status="Replied" then status end) as "Replied" 
+                                from `tabTicket` group by 
+                                DATE_FORMAT(creation,'%d-%m') 
+                                ORDER BY DATE_FORMAT(creation,'%m-%d') ASC""")
     print(ticket_count)
 
     return ticket_count
@@ -20,8 +26,8 @@ def ticket_status():
     return ticket_count_by_status
 
 @frappe.whitelist()
-def ticket_type(from_date=None, to_date=None):                                                                                                      
-    ticket_count_by_type= frappe.db.get_list('Ticket',filters=[['creation','between',from_date,to_date]], fields=['count(name) as count','ticket_type'],group_by='ticket_type')
+def ticket_type(filters=None):                                                                                                      
+    ticket_count_by_type= frappe.db.get_list('Ticket',filters=filters, fields=['count(name) as count','ticket_type'],group_by='ticket_type')
 
     return ticket_count_by_type
 

@@ -18,7 +18,11 @@
 		<div class="grid grid-cols-2">
 			<TicketTrends class="w-50" />
 			<TicketSummary class="w-50" />
-			<TicketSummaryTest class="w-50" />
+			<TicketSummaryTest
+				class="w-50"
+				:fromDate="fromDate"
+				:toDate="toDate"
+			/>
 			<TicketType class="w-50" />
 		</div>
 		<SlaSummary />
@@ -34,7 +38,7 @@ import TicketSummaryTest from "@/components/desk/dashboard/TicketSummaryTest.vue
 import SlaSummary from "@/components/desk/dashboard/SlaSummary.vue"
 import Datepicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 export default {
 	name: "Dashboard",
 	components: {
@@ -46,33 +50,44 @@ export default {
 		SlaSummary,
 		Datepicker,
 	},
-	data() {
-		return {
-			fromDate: "",
-			toDate: "",
-		}
-	},
 	setup() {
+		let fromDate = ref("")
+		let toDate = ref("")
 		let date = ref()
+
+		onMounted(() => {
+			const startDate = new Date()
+			const endDate = new Date(
+				new Date().setDate(startDate.getDate() + 7)
+			)
+			date.value = [startDate, endDate]
+			fromDate = startDate
+			toDate = endDate
+		})
 		const handleDate = (modelData) => {
 			date.value = modelData
-			this.fromDate = new Date(date.value[0]).toLocaleDateString(
-				"en-IN",
-				{
-					year: "numeric",
-					month: "2-digit",
-					day: "2-digit",
-				}
-			)
-
-			this.toDate = new Date(date.value[1]).toLocaleDateString("en-IN", {
+			fromDate = new Date(date.value[0]).toLocaleDateString("en-IN", {
 				year: "numeric",
 				month: "2-digit",
 				day: "2-digit",
 			})
+
+			fromDate = fromDate.split("/").reverse().join("-")
+
+			toDate = new Date(date.value[1]).toLocaleDateString("en-IN", {
+				year: "numeric",
+				month: "2-digit",
+				day: "2-digit",
+			})
+
+			toDate = toDate.split("/").reverse().join("-")
+
+			console.log(toDate, "helelelle")
 		}
 
 		return {
+			fromDate,
+			toDate,
 			date,
 			handleDate,
 		}

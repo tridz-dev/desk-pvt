@@ -30,31 +30,32 @@ export default {
 		VChart,
 	},
 	data() {
-		let data = [
-			{ date: "20/6", replied: 2, resolved: 2, open: 2 },
-			{ date: "22/6", replied: 2, resolved: 4, open: 5 },
-		]
+		let dates = []
+		let open = []
+		let closed = []
+		let replied = []
 		const option = {
 				title: {
 					text: "Tickets Summary",
 					left: "center",
 				},
 				xAxis: {
-					data: ["24/6", "25/6", "26/6", "27/6", "28/6", "29/6"],
+					type: "category",
+					data: dates,
 				},
 				yAxis: { type: "value" },
 				series: [
 					{
 						type: "line",
-						data: [23, 24, 18, 22, 27, 29, 30, 31],
+						data: open,
 					},
 					{
 						type: "line",
-						data: [29, 26, 34, 22, 18, 26, 25, 20],
+						data: closed,
 					},
 					{
 						type: "line",
-						data: [27, 28, 25, 26, 27, 28, 29, 30],
+						data: replied,
 					},
 				],
 			},
@@ -65,6 +66,10 @@ export default {
 		return {
 			option,
 			initOptions,
+			dates,
+			open,
+			closed,
+			replied,
 		}
 	},
 
@@ -78,9 +83,14 @@ export default {
 	resources: {
 		ticketStatus() {
 			return {
-				method: "frappedesk.api.dashboard.ticket_status",
+				method: "frappedesk.api.dashboard.ticket_summary",
 				onSuccess: (res) => {
-					console.log(res)
+					res.map((values) => {
+						this.dates.push(values[0])
+						this.open.push(values[1])
+						this.closed.push(values[2])
+						this.replied.push(values[3])
+					})
 				},
 				auto: true,
 			}
