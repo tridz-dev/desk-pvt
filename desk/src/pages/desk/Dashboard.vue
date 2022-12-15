@@ -7,6 +7,14 @@
 		</div>
 		<div class="mt-3.5 mr-8 ml-8">Welcome, Fadil</div>
 		<TicketStatus />
+		<div class="ml-auto w-48 mr-24">
+			<Datepicker
+				v-model="date"
+				range
+				@update:modelValue="handleDate"
+				:enable-time-picker="false"
+			/>
+		</div>
 		<div class="grid grid-cols-2">
 			<TicketTrends class="w-50" />
 			<TicketSummary class="w-50" />
@@ -24,6 +32,9 @@ import TicketType from "@/components/desk/dashboard/TicketType.vue"
 import TicketStatus from "@/components/desk/dashboard/TicketStatus.vue"
 import TicketSummaryTest from "@/components/desk/dashboard/TicketSummaryTest.vue"
 import SlaSummary from "@/components/desk/dashboard/SlaSummary.vue"
+import Datepicker from "@vuepic/vue-datepicker"
+import "@vuepic/vue-datepicker/dist/main.css"
+import { ref } from "vue"
 export default {
 	name: "Dashboard",
 	components: {
@@ -33,6 +44,38 @@ export default {
 		TicketStatus,
 		TicketSummaryTest,
 		SlaSummary,
+		Datepicker,
+	},
+	data() {
+		return {
+			fromDate: "",
+			toDate: "",
+		}
+	},
+	setup() {
+		let date = ref()
+		const handleDate = (modelData) => {
+			date.value = modelData
+			this.fromDate = new Date(date.value[0]).toLocaleDateString(
+				"en-IN",
+				{
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit",
+				}
+			)
+
+			this.toDate = new Date(date.value[1]).toLocaleDateString("en-IN", {
+				year: "numeric",
+				month: "2-digit",
+				day: "2-digit",
+			})
+		}
+
+		return {
+			date,
+			handleDate,
+		}
 	},
 }
 </script>
