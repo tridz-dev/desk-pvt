@@ -21,9 +21,12 @@
 				</div>
 			</div>
 			<div
-				class="box-border h-16 w-96 p-4 border-2 rounded-md justify-between"
+				class="flex flex-row box-border h-16 w-96 p-4 border-2 rounded-md justify-between"
 			>
-				Resolution within SLA
+				<div class="font-light">Resolution within SLA</div>
+				<div class="font-semibold text-3xl">
+					{{ resolutionWithinSla }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -34,11 +37,14 @@ export default {
 	name: "SlaSummary",
 	computed: {
 		averageFirstResponseTime() {
-			return this.$resources.averageFirstResponseTime.data.toFixed(1)
+			return this.$resources.averageFirstResponseTime.data
 		},
 
 		averageResolutionTime() {
-			return this.$resources.averageResolutionTime.data.toFixed(1)
+			return this.$resources.averageResolutionTime.data
+		},
+		resolutionWithinSla() {
+			return this.$resources.resolutionWithinSla.data
 		},
 	},
 	resources: {
@@ -51,6 +57,12 @@ export default {
 		averageResolutionTime() {
 			return {
 				method: "frappedesk.api.dashboard.average_resolution_time",
+				auto: true,
+			}
+		},
+		resolutionWithinSla() {
+			return {
+				method: "frappedesk.api.dashboard.resolution_within_sla",
 				auto: true,
 			}
 		},

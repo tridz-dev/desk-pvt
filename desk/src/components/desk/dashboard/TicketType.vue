@@ -12,6 +12,7 @@ export default {
 		"v-chart": ECharts,
 	},
 	data() {
+		let ticketCount = []
 		let option = {
 			title: {
 				text: "Customer Satisfaction Feedback",
@@ -22,18 +23,14 @@ export default {
 			},
 			legend: {
 				orient: "horizontal",
-				top:"bottom"
+				top: "bottom",
 			},
 			series: [
 				{
-					name: "Access From",
+					name: "Feedback Status",
 					type: "pie",
 					radius: "50%",
-					data: [
-						{ value: 20, name: "Positive" },
-						{ value: 10, name: "Neutral" },
-						{ value: 5, name: "Negative" },
-					],
+					data: ticketCount,
 					emphasis: {
 						itemStyle: {
 							shadowBlur: 10,
@@ -47,7 +44,27 @@ export default {
 
 		return {
 			option,
+			ticketCount,
 		}
+	},
+
+	methods: {
+		count() {
+			this.$resources.getFeedbackStatusCount.fetch()
+		},
+	},
+	resources: {
+		getFeedbackStatusCount() {
+			return {
+				method: "frappedesk.api.dashboard.feedback_status",
+				onSuccess: (res) => {
+					res.map((value) => {
+						this.ticketCount.push(value)
+					})
+				},
+				auto: true,
+			}
+		},
 	},
 }
 </script>

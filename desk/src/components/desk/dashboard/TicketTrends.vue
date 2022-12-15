@@ -91,17 +91,13 @@ export default {
 								)
 							] = value.count
 						}
-						console.log(value)
 					})
-					console.log("holder", holder)
 					var arr = []
 					for (var prop in holder) {
 						arr.push({ creation: prop, count: holder[prop] })
 					}
 
 					arr.map((res) => {
-						console.log(res)
-
 						this.ticketCount.push(res.count)
 						this.ticketMonth.push(res.creation)
 					})
