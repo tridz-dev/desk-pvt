@@ -1,11 +1,11 @@
 <template>
-	<div class="mt-8 ml-8 mb-8">
+	<div class="mt-8 ml-8 mb-8 mr-6">
 		<div class="line-clamp-1 text-xl text-gray-900 font-semibold">
 			SLA Summary
 		</div>
-		<div class="grid grid-cols-3 mt-8 mb-8">
+		<div class="grid grid-cols-3 mt-8 mb-8 gap-4">
 			<div
-				class="flex flex-row box-border h-16 w-96 p-4 border-2 rounded-md justify-between"
+				class="flex flex-row box-border h-16 p-4 border-2 rounded-md justify-between"
 			>
 				<div class="font-light">Avg. First Response time (hours)</div>
 				<div class="font-semibold text-3xl">
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 			<div
-				class="flex flex-row box-border h-16 w-96 p-4 border-2 rounded-md justify-between"
+				class="flex flex-row box-border h-16 p-4 border-2 rounded-md justify-between"
 			>
 				<div class="font-light">Avg. Resolution Time (hours)</div>
 				<div class="font-semibold text-3xl">
@@ -21,7 +21,7 @@
 				</div>
 			</div>
 			<div
-				class="flex flex-row box-border h-16 w-96 p-4 border-2 rounded-md justify-between"
+				class="flex flex-row box-border h-16 p-4 border-2 rounded-md justify-between"
 			>
 				<div class="font-light">Resolution within SLA</div>
 				<div class="font-semibold text-3xl">

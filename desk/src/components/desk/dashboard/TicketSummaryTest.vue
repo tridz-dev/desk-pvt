@@ -36,7 +36,7 @@ export default {
 		let option = {
 			title: {
 				text: "Tickets by Type",
-				left: "center",
+				left: "5%",
 			},
 			yAxis: {
 				type: "category",
@@ -83,7 +83,6 @@ export default {
 						this.ticketCount.push(value.count)
 						this.ticketType.push(value.ticket_type)
 					})
-					
 				},
 				auto: true,
 			}

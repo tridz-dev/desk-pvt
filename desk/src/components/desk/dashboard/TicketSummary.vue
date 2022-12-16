@@ -25,7 +25,7 @@ use([
 ])
 
 export default {
-	name: "TicketTrends",
+	name: "TicketSummary",
 	components: {
 		VChart,
 	},
@@ -42,10 +42,10 @@ export default {
 		},
 		watch: {
 			fromDate(newVal, Oldval) {
-				console.log(newVal, Oldval, "broooo")
+				console.log(newVal, Oldval, "hehehehheheh")
 			},
 			toDate(newVal, oldVal) {
-				console.log(oldVal, newVal, "todate")
+				console.log(oldVal, newVal)
 			},
 		},
 	},
@@ -58,6 +58,9 @@ export default {
 				title: {
 					text: "Tickets Summary",
 					left: "center",
+				},
+				tooltip: {
+					trigger: "axis",
 				},
 				xAxis: {
 					type: "category",

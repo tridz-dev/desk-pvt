@@ -2,30 +2,30 @@ import frappe
 import datetime
 
 @frappe.whitelist()
-def get_ticket_count():
-    ticket_count = frappe.db.get_list('Ticket',fields=['count(name) as count','creation'],group_by='creation')
+def get_ticket_count(filters=None):
+    ticket_count = frappe.db.get_list('Ticket',filters=filters,fields=['count(name) as count','creation'],group_by='creation',order_by='creation asc')
 
     return ticket_count
 
 @frappe.whitelist()
 def ticket_summary(startDate=None,endDate=None):
+    print(startDate)
     if startDate and endDate:
-        startDate= datetime.datetime.strptime(startDate, "%d-%m")
-        print(startDate)
-        print(type(startDate))
-        endDate = datetime.datetime.strptime(endDate, "%d-%m")
-    ticket_count = frappe.db.sql("""select DATE_FORMAT(creation,'%d-%m'),
+        startDate= datetime.datetime.strptime(startDate, "%Y-%m-%d").strftime("%d-%m")
+        endDate = datetime.datetime.strptime(endDate, "%Y-%m-%d").strftime("%d-%m")
+    ticket_count = frappe.db.sql("""select TO_CHAR(creation,'DD-MM') as date,
                                 COUNT(Case when status="Open" then status end) as "Open", 
                                 COUNT(Case when status="Closed" then status end) as "Closed", 
                                 COUNT(Case when status="Replied" then status end) as "Replied" 
-                                from `tabTicket` WHERE DATE('creation) BETWEEN %s AND %s group by 
-                                DATE_FORMAT(creation,'%d-%m') 
-                                ORDER BY DATE_FORMAT(creation,'%m-%d') ASC""",(startDate , endDate))
+                                from `tabTicket` WHERE TO_CHAR(creation,'DD-MM') BETWEEN %s AND %s group by 
+                                TO_CHAR(creation,'DD-MM')
+                                ORDER BY TO_CHAR(creation,'MM-DD') ASC""",(startDate,endDate))
+    print(ticket_count)
     return ticket_count
 
 @frappe.whitelist()
 def ticket_status():
-    ticket_count_by_status = frappe.db.get_list('Ticket',fields=['count(name) as count','status','creation'],group_by='status')
+    ticket_count_by_status = frappe.db.get_list('Ticket',fields=['count(name) as count','status','creation','resolution_by'],group_by='status')
     
     return ticket_count_by_status
 

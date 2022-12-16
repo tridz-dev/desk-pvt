@@ -35,7 +35,7 @@ export default {
 		let option = {
 			title: {
 				text: "Customer Satisfaction Feedback",
-				left: "center",
+				left: "5%",
 			},
 			tooltip: {
 				trigger: "item",

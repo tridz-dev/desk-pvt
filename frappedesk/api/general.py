@@ -131,3 +131,11 @@ def save_filter_preset(doctype, is_global, title, filters):
 	)
 	preset_filter.save(ignore_permissions=True)
 	return preset_filter.name
+
+@frappe.whitelist()
+def get_session_user():
+	user = frappe.session.user
+
+	print(user)
+
+	return user

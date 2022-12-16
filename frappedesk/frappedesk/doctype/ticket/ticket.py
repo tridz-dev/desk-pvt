@@ -42,7 +42,7 @@ class Ticket(Document):
 	def on_update(self):
 		self.handle_ticket_activity_update()
 		self.remove_assignment_if_not_in_team()
-
+	
 	def handle_ticket_activity_update(self):
 		"""
 		Handles the ticket activity update.
@@ -66,6 +66,7 @@ class Ticket(Document):
 				log_ticket_activity(
 					self.name, f"{field_maps[field]} set to {self.as_dict()[field]}"
 				)
+			
 
 	def remove_assignment_if_not_in_team(self):
 		"""
@@ -87,6 +88,7 @@ class Ticket(Document):
 				frappe.publish_realtime(
 					"ticket_assignee_update", {"ticket_id": self.name}, after_commit=True
 				)
+
 
 	def update_priority_based_on_ticket_type(self):
 		if self.ticket_type:

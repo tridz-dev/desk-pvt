@@ -11,19 +11,38 @@ export default {
 	components: {
 		"v-chart": ECharts,
 	},
+	props: {
+		fromDate: {
+			type: String,
+			required: true,
+		},
+		toDate: {
+			type: String,
+			required: true,
+		},
+	},
+	watch: {
+		fromDate(newVal, Oldval) {
+			console.log(newVal, Oldval, "trnd")
+		},
+		toDate(newVal, oldVal) {
+			console.log(oldVal, newVal, "ddd")
+		},
+	},
 	data() {
 		let ticketCount = []
 		let ticketMonth = []
 		let option = {
 			title: {
 				text: "Ticket Trends",
-				left: "center",
+				left: "5%",
 			},
 			tooltip: {
 				trigger: "axis",
 			},
 			xAxis: {
 				type: "category",
+				boundaryGap: false,
 				data: ticketMonth,
 			},
 			yAxis: {
@@ -31,8 +50,10 @@ export default {
 			},
 			series: [
 				{
+					name: "Ticket Count",
 					data: ticketCount,
 					type: "line",
+					stack: "total",
 					showSymbol: false,
 					lineStyle: {
 						width: 3,
@@ -60,34 +81,39 @@ export default {
 		getTicketCount() {
 			return {
 				method: "frappedesk.api.dashboard.get_ticket_count",
+				params: {
+					filters: [
+						["creation", "between", [this.fromDate, this.toDate]],
+					],
+				},
 				onSuccess: (res) => {
 					let holder = {}
 					res.map((value) => {
 						if (
 							holder.hasOwnProperty(
 								new Date(value.creation).toLocaleDateString(
-									"en-US",
-									{ year: "2-digit", month: "short" }
+									"en-IN",
+									{ day: "2-digit", month: "2-digit" }
 								)
 							)
 						) {
 							holder[
 								new Date(value.creation).toLocaleDateString(
-									"en-US",
-									{ year: "2-digit", month: "short" }
+									"en-IN",
+									{ day: "2-digit", month: "2-digit" }
 								)
 							] =
 								holder[
 									new Date(value.creation).toLocaleDateString(
-										"en-US",
-										{ year: "2-digit", month: "short" }
+										"en-IN",
+										{ day: "2-digit", month: "2-digit" }
 									)
 								] + value.count
 						} else {
 							holder[
 								new Date(value.creation).toLocaleDateString(
-									"en-US",
-									{ year: "2-digit", month: "short" }
+									"en-IN",
+									{ day: "2-digit", month: "2-digit" }
 								)
 							] = value.count
 						}
@@ -97,6 +123,8 @@ export default {
 						arr.push({ creation: prop, count: holder[prop] })
 					}
 
+					this.ticketCount.length = 0
+					this.ticketMonth.length = 0
 					arr.map((res) => {
 						this.ticketCount.push(res.count)
 						this.ticketMonth.push(res.creation)
