@@ -1,4 +1,5 @@
 import frappe
+import datetime
 
 @frappe.whitelist()
 def get_ticket_count():
@@ -7,16 +8,19 @@ def get_ticket_count():
     return ticket_count
 
 @frappe.whitelist()
-def ticket_summary():
+def ticket_summary(startDate=None,endDate=None):
+    if startDate and endDate:
+        startDate= datetime.datetime.strptime(startDate, "%d-%m")
+        print(startDate)
+        print(type(startDate))
+        endDate = datetime.datetime.strptime(endDate, "%d-%m")
     ticket_count = frappe.db.sql("""select DATE_FORMAT(creation,'%d-%m'),
                                 COUNT(Case when status="Open" then status end) as "Open", 
                                 COUNT(Case when status="Closed" then status end) as "Closed", 
                                 COUNT(Case when status="Replied" then status end) as "Replied" 
-                                from `tabTicket` group by 
+                                from `tabTicket` WHERE DATE('creation) BETWEEN %s AND %s group by 
                                 DATE_FORMAT(creation,'%d-%m') 
-                                ORDER BY DATE_FORMAT(creation,'%m-%d') ASC""")
-    print(ticket_count)
-
+                                ORDER BY DATE_FORMAT(creation,'%m-%d') ASC""",(startDate , endDate))
     return ticket_count
 
 @frappe.whitelist()
@@ -66,8 +70,8 @@ def resolution_within_sla():
     return str(resolution_within_sla_percentage) + "%"
 
 @frappe.whitelist()
-def feedback_status():
-    feedback_status_count = frappe.db.get_list('Ticket',filters={'feedback_status':['not like','']},fields=['count(name) as value', 'feedback_status as name'],group_by='feedback_status')
+def feedback_status(dateFilter=None):
+    feedback_status_count = frappe.db.get_list('Ticket',filters=[{'feedback_status':['not like','']},dateFilter],fields=['count(name) as value', 'feedback_status as name'],group_by='feedback_status')
 
     return feedback_status_count
 

@@ -21,6 +21,14 @@ export default {
 			required: true,
 		},
 	},
+	watch: {
+		fromDate(newVal, Oldval) {
+			console.log(newVal, Oldval, "broooo")
+		},
+		toDate(newVal, oldVal) {
+			console.log(oldVal, newVal, "todate")
+		},
+	},
 	data() {
 		let ticketType = []
 		let ticketCount = []
@@ -63,17 +71,19 @@ export default {
 				method: "frappedesk.api.dashboard.ticket_type",
 				params: {
 					filters: [
-						["creation", "between", ["2022-12-02", "2022-12-14"]],
+						["creation", "between", [this.fromDate, this.toDate]],
 					],
 				},
 				onSuccess: (res) => {
 					this.testDate = this.fromDate
+					this.ticketType.length = 0
+					this.ticketCount.length = 0
 
-					console.log(this.testDate, "hgtyui")
 					res.map((value) => {
 						this.ticketCount.push(value.count)
 						this.ticketType.push(value.ticket_type)
 					})
+					
 				},
 				auto: true,
 			}

@@ -23,7 +23,7 @@
 				:fromDate="fromDate"
 				:toDate="toDate"
 			/>
-			<TicketType class="w-50" />
+			<TicketType :fromDate="fromDate" :toDate="toDate" class="w-50" />
 		</div>
 		<SlaSummary />
 	</div>
@@ -50,50 +50,105 @@ export default {
 		SlaSummary,
 		Datepicker,
 	},
-	setup() {
-		let fromDate = ref("")
-		let toDate = ref("")
-		let date = ref()
 
-		onMounted(() => {
-			const startDate = new Date()
-			const endDate = new Date(
-				new Date().setDate(startDate.getDate() + 7)
-			)
-			date.value = [startDate, endDate]
-			fromDate = startDate
-			toDate = endDate
-		})
-		const handleDate = (modelData) => {
-			date.value = modelData
-			fromDate = new Date(date.value[0]).toLocaleDateString("en-IN", {
-				year: "numeric",
-				month: "2-digit",
-				day: "2-digit",
-			})
-
-			fromDate = fromDate.split("/").reverse().join("-")
-
-			toDate = new Date(date.value[1]).toLocaleDateString("en-IN", {
-				year: "numeric",
-				month: "2-digit",
-				day: "2-digit",
-			})
-
-			toDate = toDate.split("/").reverse().join("-")
-
-			console.log(toDate, "helelelle")
-		}
+	data() {
+		let date = {}
+		let fromDate = ""
+		let toDate = ""
 
 		return {
+			date,
 			fromDate,
 			toDate,
-			date,
-			handleDate,
-
-			
 		}
 	},
+
+	methods: {
+		handleDate(modelData) {
+			this.date.value = modelData
+			this.fromDate = new Date(this.date.value[0]).toLocaleDateString(
+				"en-IN",
+				{
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit",
+				}
+			)
+			this.fromDate = this.fromDate.split("/").reverse().join("-")
+			this.toDate = new Date(this.date.value[1]).toLocaleDateString(
+				"en-IN",
+				{
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit",
+				}
+			)
+			this.toDate = this.toDate.split("/").reverse().join("-")
+			console.log(this.fromDate, this.toDate)
+		},
+	},
+
+	beforeMount() {
+		const startDate = new Date().setDate(new Date().getDate() - 7)
+		const endDate = new Date()
+		this.date.value = [startDate, endDate]
+		this.fromDate = startDate
+		this.fromDate = new Date(startDate).toLocaleDateString("en-IN", {
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+		})
+		this.fromDate = this.fromDate.split("/").reverse().join("-")
+		this.toDate = endDate
+		this.toDate = new Date(endDate).toLocaleDateString("en-IN", {
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+		})
+		this.toDate = this.toDate.split("/").reverse().join("-")
+	},
+	// setup() {
+	// 	let fromDate = ref("")
+	// 	let toDate = ref("")
+	// 	let date = ref()
+
+	// 	onMounted(() => {
+	// const startDate = new Date()
+	// const endDate = new Date(
+	// 	new Date().setDate(startDate.getDate() + 7)
+	// )
+	// date.value = [startDate, endDate]
+	// fromDate = startDate
+	// toDate = endDate
+	// 	})
+	// 	const handleDate = (modelData) => {
+	// 		date.value = modelData
+	// 		fromDate = new Date(date.value[0]).toLocaleDateString("en-IN", {
+	// 			year: "numeric",
+	// 			month: "2-digit",
+	// 			day: "2-digit",
+	// 		})
+
+	// 		fromDate = fromDate.split("/").reverse().join("-")
+
+	// 		toDate = new Date(date.value[1]).toLocaleDateString("en-IN", {
+	// 			year: "numeric",
+	// 			month: "2-digit",
+	// 			day: "2-digit",
+	// 		})
+
+	// 		toDate = toDate.split("/").reverse().join("-")
+
+	// 		console.log(toDate, "helelelle")
+	// 	}
+
+	// 	return {
+	// 		fromDate,
+	// 		toDate,
+	// 		date,
+	// 		handleDate,
+	// 	}
+	// },
 }
 </script>
 

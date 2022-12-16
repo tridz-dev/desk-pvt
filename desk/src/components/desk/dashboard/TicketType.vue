@@ -11,6 +11,25 @@ export default {
 	components: {
 		"v-chart": ECharts,
 	},
+	props: {
+		fromDate: {
+			type: String,
+			required: true,
+		},
+		toDate: {
+			type: String,
+			required: true,
+		},
+	},
+
+	watch: {
+		fromDate(newVal, Oldval) {
+			console.log(newVal, Oldval, "broooo")
+		},
+		toDate(newVal, oldVal) {
+			console.log(oldVal, newVal, "todate")
+		},
+	},
 	data() {
 		let ticketCount = []
 		let option = {
@@ -57,7 +76,15 @@ export default {
 		getFeedbackStatusCount() {
 			return {
 				method: "frappedesk.api.dashboard.feedback_status",
+				params: {
+					dateFilter: [
+						"creation",
+						"between",
+						[this.fromDate, this.toDate],
+					],
+				},
 				onSuccess: (res) => {
+					this.ticketCount.length = 0
 					res.map((value) => {
 						this.ticketCount.push(value)
 					})

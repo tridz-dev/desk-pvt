@@ -29,6 +29,26 @@ export default {
 	components: {
 		VChart,
 	},
+	props: {
+		props: {
+			fromDate: {
+				type: String,
+				required: true,
+			},
+			toDate: {
+				type: String,
+				required: true,
+			},
+		},
+		watch: {
+			fromDate(newVal, Oldval) {
+				console.log(newVal, Oldval, "broooo")
+			},
+			toDate(newVal, oldVal) {
+				console.log(oldVal, newVal, "todate")
+			},
+		},
+	},
 	data() {
 		let dates = []
 		let open = []
@@ -84,6 +104,10 @@ export default {
 		ticketStatus() {
 			return {
 				method: "frappedesk.api.dashboard.ticket_summary",
+				params: {
+					startDate: this.fromDate,
+					endDate: this.toDate,
+				},
 				onSuccess: (res) => {
 					res.map((values) => {
 						this.dates.push(values[0])
